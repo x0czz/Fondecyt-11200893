@@ -1,0 +1,2005 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Analisis facotrial},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Analisis facotrial}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(pacman)}
+\FunctionTok{p\_load}\NormalTok{(dplyr,}
+\NormalTok{       psych,}
+\NormalTok{       lavaan,}
+\NormalTok{       haven,}
+\NormalTok{       summarytools}
+\NormalTok{       )}
+\FunctionTok{library}\NormalTok{(kableExtra)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Warning: package 'kableExtra' was built under R version 4.4.3
+\end{verbatim}
+
+\begin{verbatim}
+
+Attaching package: 'kableExtra'
+\end{verbatim}
+
+\begin{verbatim}
+The following object is masked from 'package:dplyr':
+
+    group_rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Encuesta\_Sociedad\_de\_Consumo\_2023 }\OtherTok{\textless{}{-}} \FunctionTok{read\_sav}\NormalTok{(}\StringTok{"Encuesta Sociedad de Consumo 2023.sav"}\NormalTok{)}
+\FunctionTok{View}\NormalTok{(Encuesta\_Sociedad\_de\_Consumo\_2023)}
+\NormalTok{datos}\OtherTok{\textless{}{-}}\NormalTok{ Encuesta\_Sociedad\_de\_Consumo\_2023 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(SEXO, EDAD, EDADR, NSE, NSE\_RECOD, NSE\_sint, ZONA, B1, C1, C2, C3\_1}\SpecialCharTok{:}\NormalTok{C3\_16, C5a, A1}\SpecialCharTok{:}\StringTok{\textasciigrave{}}\AttributeTok{A2\#4}\StringTok{\textasciigrave{}}\NormalTok{, O1\_1}\SpecialCharTok{:}\NormalTok{O1\_10, O2\_1}\SpecialCharTok{:}\NormalTok{O2\_14 , O3\_1}\SpecialCharTok{:}\NormalTok{O3\_10, O4\_1}\SpecialCharTok{:}\NormalTok{O4\_12, O5, E2, E3, E4, }\StringTok{\textasciigrave{}}\AttributeTok{S5\#2}\StringTok{\textasciigrave{}}\SpecialCharTok{:}\StringTok{\textasciigrave{}}\AttributeTok{S5\#99}\StringTok{\textasciigrave{}}\NormalTok{, }\StringTok{\textasciigrave{}}\AttributeTok{T6\#1}\StringTok{\textasciigrave{}}\SpecialCharTok{:}\StringTok{\textasciigrave{}}\AttributeTok{T6\#99}\StringTok{\textasciigrave{}}\NormalTok{, M14, M5, M6, M7, M8, M9, M10, M11\_1}\SpecialCharTok{:}\NormalTok{M11\_8, M12\_1}\SpecialCharTok{:}\NormalTok{M12\_6, }\StringTok{\textasciigrave{}}\AttributeTok{M13\#1}\StringTok{\textasciigrave{}}\SpecialCharTok{:}\StringTok{\textasciigrave{}}\AttributeTok{M13\#99}\StringTok{\textasciigrave{}}\NormalTok{, M14, M15, M16\_1}\SpecialCharTok{:}\NormalTok{M16\_9, M18\_1}\SpecialCharTok{:}\NormalTok{M18\_7)}
+\NormalTok{moduloc }\OtherTok{\textless{}{-}}\NormalTok{ datos }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"O"}\NormalTok{))}
+\NormalTok{moduloc }\OtherTok{\textless{}{-}}\NormalTok{ moduloc }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{O5)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Analisis exploratorio modulo
+C.}\label{analisis-exploratorio-modulo-c.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#INVERTIR LA BATERIA 5}
+\NormalTok{moduloc\_corrected }\OtherTok{\textless{}{-}}\NormalTok{ moduloc }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"O4"}\NormalTok{), }\SpecialCharTok{\textasciitilde{}} \DecValTok{6} \SpecialCharTok{{-}}\NormalTok{ .))}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{nrow}\NormalTok{(moduloc\_corrected)}
+\NormalTok{primera\_mitad  }\OtherTok{\textless{}{-}}\NormalTok{ moduloc[}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{floor}\NormalTok{(n}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), ]}
+\NormalTok{segunda\_mitad  }\OtherTok{\textless{}{-}}\NormalTok{ moduloc[(}\FunctionTok{floor}\NormalTok{(n}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\NormalTok{n, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{lapply}\NormalTok{(moduloc, freq) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{kable}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 417 & 25.693161 & 25.69316 & 25.693161 & 25.69316\\
+\hline
+2 & 436 & 26.863832 & 52.55699 & 26.863832 & 52.55699\\
+\hline
+3 & 570 & 35.120148 & 87.67714 & 35.120148 & 87.67714\\
+\hline
+4 & 141 & 8.687615 & 96.36476 & 8.687615 & 96.36476\\
+\hline
+5 & 59 & 3.635243 & 100.00000 & 3.635243 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 954 & 58.780037 & 58.78004 & 58.780037 & 58.78004\\
+\hline
+2 & 333 & 20.517560 & 79.29760 & 20.517560 & 79.29760\\
+\hline
+3 & 234 & 14.417745 & 93.71534 & 14.417745 & 93.71534\\
+\hline
+4 & 59 & 3.635243 & 97.35059 & 3.635243 & 97.35059\\
+\hline
+5 & 43 & 2.649415 & 100.00000 & 2.649415 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 106 & 6.531115 & 6.531115 & 6.531115 & 6.531115\\
+\hline
+2 & 148 & 9.118916 & 15.650031 & 9.118916 & 15.650031\\
+\hline
+3 & 451 & 27.788047 & 43.438078 & 27.788047 & 43.438078\\
+\hline
+4 & 452 & 27.849661 & 71.287739 & 27.849661 & 71.287739\\
+\hline
+5 & 466 & 28.712261 & 100.000000 & 28.712261 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 439 & 27.048675 & 27.04868 & 27.048675 & 27.04868\\
+\hline
+2 & 414 & 25.508318 & 52.55699 & 25.508318 & 52.55699\\
+\hline
+3 & 517 & 31.854590 & 84.41158 & 31.854590 & 84.41158\\
+\hline
+4 & 163 & 10.043130 & 94.45471 & 10.043130 & 94.45471\\
+\hline
+5 & 90 & 5.545286 & 100.00000 & 5.545286 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 300 & 18.484288 & 18.48429 & 18.484288 & 18.48429\\
+\hline
+2 & 308 & 18.977203 & 37.46149 & 18.977203 & 37.46149\\
+\hline
+3 & 620 & 38.200863 & 75.66235 & 38.200863 & 75.66235\\
+\hline
+4 & 255 & 15.711645 & 91.37400 & 15.711645 & 91.37400\\
+\hline
+5 & 140 & 8.626001 & 100.00000 & 8.626001 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 805 & 49.599507 & 49.59951 & 49.599507 & 49.59951\\
+\hline
+2 & 333 & 20.517560 & 70.11707 & 20.517560 & 70.11707\\
+\hline
+3 & 356 & 21.934689 & 92.05176 & 21.934689 & 92.05176\\
+\hline
+4 & 86 & 5.298829 & 97.35059 & 5.298829 & 97.35059\\
+\hline
+5 & 43 & 2.649415 & 100.00000 & 2.649415 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 129 & 7.948244 & 7.948244 & 7.948244 & 7.948244\\
+\hline
+2 & 261 & 16.081331 & 24.029575 & 16.081331 & 24.029575\\
+\hline
+3 & 607 & 37.399877 & 61.429452 & 37.399877 & 61.429452\\
+\hline
+4 & 426 & 26.247689 & 87.677141 & 26.247689 & 87.677141\\
+\hline
+5 & 200 & 12.322859 & 100.000000 & 12.322859 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 485 & 29.882933 & 29.88293 & 29.882933 & 29.88293\\
+\hline
+2 & 389 & 23.967961 & 53.85089 & 23.967961 & 53.85089\\
+\hline
+3 & 542 & 33.394948 & 87.24584 & 33.394948 & 87.24584\\
+\hline
+4 & 152 & 9.365373 & 96.61121 & 9.365373 & 96.61121\\
+\hline
+5 & 55 & 3.388786 & 100.00000 & 3.388786 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 107 & 6.592729 & 6.592729 & 6.592729 & 6.592729\\
+\hline
+2 & 126 & 7.763401 & 14.356131 & 7.763401 & 14.356131\\
+\hline
+3 & 354 & 21.811460 & 36.167591 & 21.811460 & 36.167591\\
+\hline
+4 & 509 & 31.361676 & 67.529267 & 31.361676 & 67.529267\\
+\hline
+5 & 527 & 32.470733 & 100.000000 & 32.470733 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 227 & 13.98644 & 13.98644 & 13.98644 & 13.98644\\
+\hline
+2 & 251 & 15.46519 & 29.45163 & 15.46519 & 29.45163\\
+\hline
+3 & 424 & 26.12446 & 55.57609 & 26.12446 & 55.57609\\
+\hline
+4 & 385 & 23.72150 & 79.29760 & 23.72150 & 79.29760\\
+\hline
+5 & 336 & 20.70240 & 100.00000 & 20.70240 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 23 & 1.417129 & 1.417129 & 1.417129 & 1.417129\\
+\hline
+2 & 58 & 3.573629 & 4.990758 & 3.573629 & 4.990758\\
+\hline
+3 & 153 & 9.426987 & 14.417745 & 9.426987 & 14.417745\\
+\hline
+4 & 430 & 26.494147 & 40.911892 & 26.494147 & 40.911892\\
+\hline
+5 & 959 & 59.088108 & 100.000000 & 59.088108 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 40 & 2.464572 & 2.464572 & 2.464572 & 2.464572\\
+\hline
+2 & 59 & 3.635243 & 6.099815 & 3.635243 & 6.099815\\
+\hline
+3 & 250 & 15.403574 & 21.503389 & 15.403574 & 21.503389\\
+\hline
+4 & 334 & 20.579174 & 42.082563 & 20.579174 & 42.082563\\
+\hline
+5 & 940 & 57.917437 & 100.000000 & 57.917437 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 51 & 3.142329 & 3.142329 & 3.142329 & 3.142329\\
+\hline
+2 & 115 & 7.085644 & 10.227973 & 7.085644 & 10.227973\\
+\hline
+3 & 399 & 24.584104 & 34.812076 & 24.584104 & 34.812076\\
+\hline
+4 & 564 & 34.750462 & 69.562539 & 34.750462 & 69.562539\\
+\hline
+5 & 494 & 30.437462 & 100.000000 & 30.437462 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 62 & 3.820086 & 3.820086 & 3.820086 & 3.820086\\
+\hline
+2 & 91 & 5.606901 & 9.426987 & 5.606901 & 9.426987\\
+\hline
+3 & 209 & 12.877388 & 22.304375 & 12.877388 & 22.304375\\
+\hline
+4 & 350 & 21.565003 & 43.869378 & 21.565003 & 43.869378\\
+\hline
+5 & 911 & 56.130622 & 100.000000 & 56.130622 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 92 & 5.668515 & 5.668515 & 5.668515 & 5.668515\\
+\hline
+2 & 179 & 11.028959 & 16.697474 & 11.028959 & 16.697474\\
+\hline
+3 & 334 & 20.579174 & 37.276648 & 20.579174 & 37.276648\\
+\hline
+4 & 393 & 24.214418 & 61.491066 & 24.214418 & 61.491066\\
+\hline
+5 & 625 & 38.508934 & 100.000000 & 38.508934 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 368 & 22.67406 & 22.67406 & 22.67406 & 22.67406\\
+\hline
+2 & 312 & 19.22366 & 41.89772 & 19.22366 & 41.89772\\
+\hline
+3 & 414 & 25.50832 & 67.40604 & 25.50832 & 67.40604\\
+\hline
+4 & 276 & 17.00555 & 84.41158 & 17.00555 & 84.41158\\
+\hline
+5 & 253 & 15.58842 & 100.00000 & 15.58842 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 276 & 17.00555 & 17.00555 & 17.00555 & 17.00555\\
+\hline
+2 & 268 & 16.51263 & 33.51818 & 16.51263 & 33.51818\\
+\hline
+3 & 457 & 28.15773 & 61.67591 & 28.15773 & 61.67591\\
+\hline
+4 & 324 & 19.96303 & 81.63894 & 19.96303 & 81.63894\\
+\hline
+5 & 298 & 18.36106 & 100.00000 & 18.36106 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 71 & 4.374615 & 4.374615 & 4.374615 & 4.374615\\
+\hline
+2 & 99 & 6.099815 & 10.474430 & 6.099815 & 10.474430\\
+\hline
+3 & 350 & 21.565003 & 32.039433 & 21.565003 & 32.039433\\
+\hline
+4 & 538 & 33.148490 & 65.187924 & 33.148490 & 65.187924\\
+\hline
+5 & 565 & 34.812076 & 100.000000 & 34.812076 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 197 & 12.13802 & 12.13802 & 12.13802 & 12.13802\\
+\hline
+2 & 374 & 23.04375 & 35.18176 & 23.04375 & 35.18176\\
+\hline
+3 & 508 & 31.30006 & 66.48182 & 31.30006 & 66.48182\\
+\hline
+4 & 324 & 19.96303 & 86.44486 & 19.96303 & 86.44486\\
+\hline
+5 & 220 & 13.55514 & 100.00000 & 13.55514 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 135 & 8.31793 & 8.31793 & 8.31793 & 8.31793\\
+\hline
+2 & 245 & 15.09550 & 23.41343 & 15.09550 & 23.41343\\
+\hline
+3 & 520 & 32.03943 & 55.45287 & 32.03943 & 55.45287\\
+\hline
+4 & 401 & 24.70733 & 80.16020 & 24.70733 & 80.16020\\
+\hline
+5 & 322 & 19.83980 & 100.00000 & 19.83980 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 133 & 8.194701 & 8.194701 & 8.194701 & 8.194701\\
+\hline
+2 & 352 & 21.688232 & 29.882933 & 21.688232 & 29.882933\\
+\hline
+3 & 757 & 46.642021 & 76.524954 & 46.642021 & 76.524954\\
+\hline
+4 & 287 & 17.683302 & 94.208256 & 17.683302 & 94.208256\\
+\hline
+5 & 94 & 5.791744 & 100.000000 & 5.791744 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 113 & 6.962415 & 6.962415 & 6.962415 & 6.962415\\
+\hline
+2 & 339 & 20.887246 & 27.849661 & 20.887246 & 27.849661\\
+\hline
+3 & 820 & 50.523722 & 78.373383 & 50.523722 & 78.373383\\
+\hline
+4 & 277 & 17.067160 & 95.440542 & 17.067160 & 95.440542\\
+\hline
+5 & 74 & 4.559458 & 100.000000 & 4.559458 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 234 & 14.417745 & 14.41774 & 14.417745 & 14.41774\\
+\hline
+2 & 375 & 23.105360 & 37.52311 & 23.105360 & 37.52311\\
+\hline
+3 & 632 & 38.940234 & 76.46334 & 38.940234 & 76.46334\\
+\hline
+4 & 256 & 15.773259 & 92.23660 & 15.773259 & 92.23660\\
+\hline
+5 & 126 & 7.763401 & 100.00000 & 7.763401 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 61 & 3.758472 & 3.758472 & 3.758472 & 3.758472\\
+\hline
+2 & 168 & 10.351202 & 14.109673 & 10.351202 & 14.109673\\
+\hline
+3 & 304 & 18.730746 & 32.840419 & 18.730746 & 32.840419\\
+\hline
+4 & 382 & 23.536660 & 56.377080 & 23.536660 & 56.377080\\
+\hline
+5 & 708 & 43.622920 & 100.000000 & 43.622920 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 177 & 10.90573 & 10.90573 & 10.90573 & 10.90573\\
+\hline
+2 & 322 & 19.83980 & 30.74553 & 19.83980 & 30.74553\\
+\hline
+3 & 530 & 32.65558 & 63.40111 & 32.65558 & 63.40111\\
+\hline
+4 & 381 & 23.47505 & 86.87616 & 23.47505 & 86.87616\\
+\hline
+5 & 213 & 13.12384 & 100.00000 & 13.12384 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 559 & 34.442391 & 34.44239 & 34.442391 & 34.44239\\
+\hline
+2 & 447 & 27.541590 & 61.98398 & 27.541590 & 61.98398\\
+\hline
+3 & 455 & 28.034504 & 90.01848 & 28.034504 & 90.01848\\
+\hline
+4 & 117 & 7.208873 & 97.22736 & 7.208873 & 97.22736\\
+\hline
+5 & 45 & 2.772643 & 100.00000 & 2.772643 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 681 & 41.959335 & 41.95933 & 41.959335 & 41.95933\\
+\hline
+2 & 397 & 24.460875 & 66.42021 & 24.460875 & 66.42021\\
+\hline
+3 & 344 & 21.195317 & 87.61553 & 21.195317 & 87.61553\\
+\hline
+4 & 116 & 7.147258 & 94.76278 & 7.147258 & 94.76278\\
+\hline
+5 & 85 & 5.237215 & 100.00000 & 5.237215 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 260 & 16.019717 & 16.01972 & 16.019717 & 16.01972\\
+\hline
+2 & 420 & 25.878004 & 41.89772 & 25.878004 & 41.89772\\
+\hline
+3 & 619 & 38.139248 & 80.03697 & 38.139248 & 80.03697\\
+\hline
+4 & 234 & 14.417745 & 94.45471 & 14.417745 & 94.45471\\
+\hline
+5 & 90 & 5.545286 & 100.00000 & 5.545286 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 779 & 47.997535 & 47.99754 & 47.997535 & 47.99754\\
+\hline
+2 & 426 & 26.247689 & 74.24522 & 26.247689 & 74.24522\\
+\hline
+3 & 301 & 18.545903 & 92.79113 & 18.545903 & 92.79113\\
+\hline
+4 & 76 & 4.682686 & 97.47381 & 4.682686 & 97.47381\\
+\hline
+5 & 41 & 2.526186 & 100.00000 & 2.526186 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 186 & 11.46026 & 11.46026 & 11.46026 & 11.46026\\
+\hline
+2 & 302 & 18.60752 & 30.06778 & 18.60752 & 30.06778\\
+\hline
+3 & 484 & 29.82132 & 59.88909 & 29.82132 & 59.88909\\
+\hline
+4 & 339 & 20.88725 & 80.77634 & 20.88725 & 80.77634\\
+\hline
+5 & 312 & 19.22366 & 100.00000 & 19.22366 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 311 & 19.162046 & 19.16205 & 19.162046 & 19.16205\\
+\hline
+2 & 358 & 22.057917 & 41.21996 & 22.057917 & 41.21996\\
+\hline
+3 & 538 & 33.148490 & 74.36845 & 33.148490 & 74.36845\\
+\hline
+4 & 290 & 17.868145 & 92.23660 & 17.868145 & 92.23660\\
+\hline
+5 & 126 & 7.763401 & 100.00000 & 7.763401 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 1173 & 72.273567 & 72.27357 & 72.273567 & 72.27357\\
+\hline
+2 & 226 & 13.924831 & 86.19840 & 13.924831 & 86.19840\\
+\hline
+3 & 142 & 8.749230 & 94.94763 & 8.749230 & 94.94763\\
+\hline
+4 & 61 & 3.758472 & 98.70610 & 3.758472 & 98.70610\\
+\hline
+5 & 21 & 1.293900 & 100.00000 & 1.293900 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 930 & 57.301294 & 57.30129 & 57.301294 & 57.30129\\
+\hline
+2 & 324 & 19.963031 & 77.26433 & 19.963031 & 77.26433\\
+\hline
+3 & 263 & 16.204559 & 93.46888 & 16.204559 & 93.46888\\
+\hline
+4 & 81 & 4.990758 & 98.45964 & 4.990758 & 98.45964\\
+\hline
+5 & 25 & 1.540357 & 100.00000 & 1.540357 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 37 & 2.279729 & 2.279729 & 2.279729 & 2.279729\\
+\hline
+2 & 84 & 5.175601 & 7.455330 & 5.175601 & 7.455330\\
+\hline
+3 & 563 & 34.688848 & 42.144177 & 34.688848 & 42.144177\\
+\hline
+4 & 556 & 34.257548 & 76.401725 & 34.257548 & 76.401725\\
+\hline
+5 & 383 & 23.598275 & 100.000000 & 23.598275 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 457 & 28.157733 & 28.15773 & 28.157733 & 28.15773\\
+\hline
+2 & 786 & 48.428835 & 76.58657 & 48.428835 & 76.58657\\
+\hline
+3 & 271 & 16.697474 & 93.28404 & 16.697474 & 93.28404\\
+\hline
+4 & 50 & 3.080715 & 96.36476 & 3.080715 & 96.36476\\
+\hline
+5 & 59 & 3.635243 & 100.00000 & 3.635243 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 152 & 9.365373 & 9.365373 & 9.365373 & 9.365373\\
+\hline
+2 & 572 & 35.243376 & 44.608749 & 35.243376 & 44.608749\\
+\hline
+3 & 535 & 32.963648 & 77.572397 & 32.963648 & 77.572397\\
+\hline
+4 & 265 & 16.327788 & 93.900185 & 16.327788 & 93.900185\\
+\hline
+5 & 99 & 6.099815 & 100.000000 & 6.099815 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 114 & 7.02403 & 7.02403 & 7.02403 & 7.02403\\
+\hline
+2 & 309 & 19.03882 & 26.06285 & 19.03882 & 26.06285\\
+\hline
+3 & 392 & 24.15280 & 50.21565 & 24.15280 & 50.21565\\
+\hline
+4 & 438 & 26.98706 & 77.20271 & 26.98706 & 77.20271\\
+\hline
+5 & 370 & 22.79729 & 100.00000 & 22.79729 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.00000 & 100.00000\\
+\hline
+Total & 1623 & 100.00000 & 100.00000 & 100.00000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 82 & 5.052372 & 5.052372 & 5.052372 & 5.052372\\
+\hline
+2 & 335 & 20.640789 & 25.693161 & 20.640789 & 25.693161\\
+\hline
+3 & 646 & 39.802834 & 65.495995 & 39.802834 & 65.495995\\
+\hline
+4 & 399 & 24.584104 & 90.080099 & 24.584104 & 90.080099\\
+\hline
+5 & 161 & 9.919901 & 100.000000 & 9.919901 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 110 & 6.777572 & 6.777572 & 6.777572 & 6.777572\\
+\hline
+2 & 286 & 17.621688 & 24.399261 & 17.621688 & 24.399261\\
+\hline
+3 & 423 & 26.062847 & 50.462107 & 26.062847 & 50.462107\\
+\hline
+4 & 419 & 25.816389 & 76.278497 & 25.816389 & 76.278497\\
+\hline
+5 & 385 & 23.721503 & 100.000000 & 23.721503 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 139 & 8.564387 & 8.564387 & 8.564387 & 8.564387\\
+\hline
+2 & 401 & 24.707332 & 33.271719 & 24.707332 & 33.271719\\
+\hline
+3 & 538 & 33.148490 & 66.420209 & 33.148490 & 66.420209\\
+\hline
+4 & 348 & 21.441775 & 87.861984 & 21.441775 & 87.861984\\
+\hline
+5 & 197 & 12.138016 & 100.000000 & 12.138016 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 70 & 4.313001 & 4.313001 & 4.313001 & 4.313001\\
+\hline
+2 & 250 & 15.403574 & 19.716574 & 15.403574 & 19.716574\\
+\hline
+3 & 381 & 23.475046 & 43.191620 & 23.475046 & 43.191620\\
+\hline
+4 & 559 & 34.442391 & 77.634011 & 34.442391 & 77.634011\\
+\hline
+5 & 363 & 22.365989 & 100.000000 & 22.365989 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 376 & 23.166975 & 23.16697 & 23.166975 & 23.16697\\
+\hline
+2 & 699 & 43.068392 & 66.23537 & 43.068392 & 66.23537\\
+\hline
+3 & 447 & 27.541590 & 93.77696 & 27.541590 & 93.77696\\
+\hline
+4 & 68 & 4.189772 & 97.96673 & 4.189772 & 97.96673\\
+\hline
+5 & 33 & 2.033272 & 100.00000 & 2.033272 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 110 & 6.777572 & 6.777572 & 6.777572 & 6.777572\\
+\hline
+2 & 349 & 21.503389 & 28.280961 & 21.503389 & 28.280961\\
+\hline
+3 & 697 & 42.945163 & 71.226124 & 42.945163 & 71.226124\\
+\hline
+4 & 364 & 22.427603 & 93.653728 & 22.427603 & 93.653728\\
+\hline
+5 & 103 & 6.346272 & 100.000000 & 6.346272 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 102 & 6.284658 & 6.284658 & 6.284658 & 6.284658\\
+\hline
+2 & 325 & 20.024646 & 26.309304 & 20.024646 & 26.309304\\
+\hline
+3 & 527 & 32.470733 & 58.780037 & 32.470733 & 58.780037\\
+\hline
+4 & 481 & 29.636476 & 88.416513 & 29.636476 & 88.416513\\
+\hline
+5 & 188 & 11.583487 & 100.000000 & 11.583487 & 100.000000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.000000\\
+\hline
+Total & 1623 & 100.000000 & 100.000000 & 100.000000 & 100.000000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 300 & 18.484288 & 18.48429 & 18.484288 & 18.48429\\
+\hline
+2 & 644 & 39.679606 & 58.16389 & 39.679606 & 58.16389\\
+\hline
+3 & 431 & 26.555761 & 84.71966 & 26.555761 & 84.71966\\
+\hline
+4 & 176 & 10.844116 & 95.56377 & 10.844116 & 95.56377\\
+\hline
+5 & 72 & 4.436229 & 100.00000 & 4.436229 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Freq & \% Valid & \% Valid Cum. & \% Total & \% Total Cum.\\
+\hline
+1 & 218 & 13.431916 & 13.43192 & 13.431916 & 13.43192\\
+\hline
+2 & 616 & 37.954405 & 51.38632 & 37.954405 & 51.38632\\
+\hline
+3 & 622 & 38.324091 & 89.71041 & 38.324091 & 89.71041\\
+\hline
+4 & 119 & 7.332101 & 97.04251 & 7.332101 & 97.04251\\
+\hline
+5 & 48 & 2.957486 & 100.00000 & 2.957486 & 100.00000\\
+\hline
+<NA> & 0 & NA & NA & 0.000000 & 100.00000\\
+\hline
+Total & 1623 & 100.000000 & 100.00000 & 100.000000 & 100.00000\\
+\hline
+\end{tabular}
+\end{table}
+
+Hay algunas variables que tienen efecto suelo o techo. (categoria menor
+o mayor \textless5\% de respuesta). Se opto por recodificar a la
+categoria mas proximas en estos casos a modo de poder capturar de mejor
+forma la variable conntinua latente en la correlacion.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fusionar\_extremos }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, }\AttributeTok{umbral =} \FloatTok{0.05}\NormalTok{) \{}
+  
+  \ControlFlowTok{if}\NormalTok{ (}\SpecialCharTok{!}\FunctionTok{is.numeric}\NormalTok{(x)) }\FunctionTok{return}\NormalTok{(x)}
+  
+\NormalTok{  x\_no\_na }\OtherTok{\textless{}{-}}\NormalTok{ x[}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(x)]}
+\NormalTok{  prop }\OtherTok{\textless{}{-}} \FunctionTok{prop.table}\NormalTok{(}\FunctionTok{table}\NormalTok{(x\_no\_na))}
+  
+  \CommentTok{\# Copia}
+\NormalTok{  x\_mod }\OtherTok{\textless{}{-}}\NormalTok{ x}
+  
+  \CommentTok{\# Efecto suelo: 1 \textless{} 5\%}
+  \ControlFlowTok{if}\NormalTok{ (}\StringTok{"1"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(prop) }\SpecialCharTok{\&\&}\NormalTok{ prop[}\StringTok{"1"}\NormalTok{] }\SpecialCharTok{\textless{}}\NormalTok{ umbral) \{}
+\NormalTok{    x\_mod[x\_mod }\SpecialCharTok{==} \DecValTok{1}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{2}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Efecto techo: 5 \textless{} 5\%}
+  \ControlFlowTok{if}\NormalTok{ (}\StringTok{"5"} \SpecialCharTok{\%in\%} \FunctionTok{names}\NormalTok{(prop) }\SpecialCharTok{\&\&}\NormalTok{ prop[}\StringTok{"5"}\NormalTok{] }\SpecialCharTok{\textless{}}\NormalTok{ umbral) \{}
+\NormalTok{    x\_mod[x\_mod }\SpecialCharTok{==} \DecValTok{5}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{4}
+\NormalTok{  \}}
+  
+  \FunctionTok{return}\NormalTok{(x\_mod)}
+\NormalTok{\}}
+
+
+\NormalTok{moduloc\_fusionado }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}
+  \FunctionTok{lapply}\NormalTok{(primera\_mitad, fusionar\_extremos, }\AttributeTok{umbral =} \FloatTok{0.05}\NormalTok{)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Pruebas previas.}\label{pruebas-previas.}
+
+Prueba de Kmo.
+
+\begin{verbatim}
+Kaiser-Meyer-Olkin factor adequacy
+Call: KMO(r = moduloc_fusionado)
+Overall MSA =  0.86
+MSA for each item = 
+ O1_1  O1_2  O1_3  O1_4  O1_5  O1_6  O1_7  O1_8  O1_9 O1_10  O2_1  O2_2  O2_3 
+ 0.70  0.77  0.72  0.69  0.73  0.86  0.87  0.90  0.81  0.88  0.86  0.85  0.89 
+ O2_4  O2_5  O2_6  O2_7  O2_8  O2_9 O2_10 O2_11 O2_12 O2_13 O2_14  O3_1  O3_2 
+ 0.90  0.87  0.88  0.91  0.88  0.89  0.94  0.93  0.94  0.93  0.89  0.90  0.91 
+ O3_3  O3_4  O3_5  O3_6  O3_7  O3_8  O3_9 O3_10  O4_1  O4_2  O4_3  O4_4  O4_5 
+ 0.91  0.90  0.88  0.88  0.93  0.83  0.81  0.65  0.79  0.71  0.67  0.92  0.66 
+ O4_6  O4_7  O4_8  O4_9 O4_10 O4_11 O4_12 
+ 0.82  0.75  0.76  0.56  0.81  0.75  0.73 
+\end{verbatim}
+
+MSA= .86 ``meritorio'' o ``maravilloso'' segun el criterio de Kaiser.
+Realizar analisis factorial es adecuado.
+
+Prueba de esfericidad de Bartlett
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cortest.bartlett}\NormalTok{(moduloc\_fusionado)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+R was not square, finding R from data
+\end{verbatim}
+
+\begin{verbatim}
+$chisq
+[1] 8917.564
+
+$p.value
+[1] 0
+
+$df
+[1] 1035
+\end{verbatim}
+
+Se rechaza la H0. La matriz de correlaciones no es una matriz de
+identidad. El analisis factorial es aduecuado.
+
+\subsubsection{Determinar numero de
+factores.}\label{determinar-numero-de-factores.}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Documento_de_analisis_files/figure-pdf/unnamed-chunk-6-1.pdf}}
+
+\begin{verbatim}
+Parallel analysis suggests that the number of factors =  9  and the number of components =  NA 
+\end{verbatim}
+
+\begin{verbatim}
+
+Using eigendecomposition of correlation matrix.
+Computing: 10%  20%  30%  40%  50%  60%  70%  80%  90%  100%
+
+
+Results of Horn's Parallel Analysis for component retention
+1000 iterations, using the mean estimate
+
+-------------------------------------------------- 
+Component   Adjusted    Unadjusted    Estimated 
+            Eigenvalue  Eigenvalue    Bias 
+-------------------------------------------------- 
+1           6.493930    6.980767      0.486836
+2           3.061162    3.498634      0.437471
+3           2.067881    2.468771      0.400889
+4           1.383026    1.752418      0.369391
+5           1.357386    1.698714      0.341328
+6           1.183101    1.498089      0.314988
+7           1.163491    1.453988      0.290496
+-------------------------------------------------- 
+
+Adjusted eigenvalues > 1 indicate dimensions to retain.
+(7 components retained)
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Documento_de_analisis_files/figure-pdf/unnamed-chunk-6-2.pdf}}
+
+Se estimaran soluciones de 4 a 7 factores.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{s1 }\OtherTok{\textless{}{-}} \DecValTok{6}
+\NormalTok{s2 }\OtherTok{\textless{}{-}} \DecValTok{7}
+\NormalTok{s3 }\OtherTok{\textless{}{-}} \DecValTok{8}
+\NormalTok{s4 }\OtherTok{\textless{}{-}} \DecValTok{9}
+\NormalTok{moduloc\_fusionado}\SpecialCharTok{$}\NormalTok{O4\_6 }\OtherTok{\textless{}{-}} \DecValTok{5} \SpecialCharTok{{-}}\NormalTok{ moduloc\_fusionado}\SpecialCharTok{$}\NormalTok{O4\_6}
+
+\FunctionTok{factanal}\NormalTok{(moduloc\_fusionado, }\DecValTok{9}\NormalTok{, }\AttributeTok{rotation=} \StringTok{"varimax"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+Call:
+factanal(x = moduloc_fusionado, factors = 9, rotation = "varimax")
+
+Uniquenesses:
+ O1_1  O1_2  O1_3  O1_4  O1_5  O1_6  O1_7  O1_8  O1_9 O1_10  O2_1  O2_2  O2_3 
+0.693 0.739 0.770 0.784 0.518 0.760 0.753 0.753 0.677 0.620 0.672 0.697 0.713 
+ O2_4  O2_5  O2_6  O2_7  O2_8  O2_9 O2_10 O2_11 O2_12 O2_13 O2_14  O3_1  O3_2 
+0.692 0.711 0.414 0.692 0.517 0.683 0.626 0.598 0.615 0.636 0.780 0.430 0.649 
+ O3_3  O3_4  O3_5  O3_6  O3_7  O3_8  O3_9 O3_10  O4_1  O4_2  O4_3  O4_4  O4_5 
+0.568 0.376 0.621 0.613 0.614 0.522 0.648 0.851 0.728 0.778 0.252 0.738 0.445 
+ O4_6  O4_7  O4_8  O4_9 O4_10 O4_11 O4_12 
+0.483 0.779 0.647 0.929 0.689 0.797 0.719 
+
+Loadings:
+      Factor1 Factor2 Factor3 Factor4 Factor5 Factor6 Factor7 Factor8 Factor9
+O1_1  -0.104   0.212                   0.480                   0.110         
+O1_2           0.287           0.219   0.160          -0.310                 
+O1_3                                   0.460                                 
+O1_4           0.137                   0.418                                 
+O1_5           0.201                                   0.652                 
+O1_6           0.243           0.349                   0.230                 
+O1_7   0.173   0.185           0.143                   0.267   0.288         
+O1_8   0.120   0.260           0.233   0.202           0.134  -0.122   0.189 
+O1_9   0.287   0.108                   0.431                   0.184         
+O1_10  0.544                   0.162   0.153                  -0.107         
+O2_1   0.491  -0.155                          -0.136           0.176         
+O2_2   0.438                                           0.218   0.186   0.111 
+O2_3   0.479                          -0.137                   0.162         
+O2_4   0.493                                  -0.160           0.125         
+O2_5   0.471                                           0.173           0.126 
+O2_6   0.317   0.149  -0.183   0.618                           0.202         
+O2_7   0.302   0.232           0.276                   0.127   0.237         
+O2_8   0.666                   0.143                                         
+O2_9   0.379   0.252           0.256   0.171   0.111                         
+O2_10  0.468   0.264           0.147   0.120  -0.114                   0.186 
+O2_11  0.308   0.327           0.240   0.202           0.173           0.248 
+O2_12  0.308   0.337           0.256   0.131           0.235   0.132   0.146 
+O2_13  0.350   0.381           0.103   0.251                           0.114 
+O2_14  0.442                                  -0.117                         
+O3_1   0.323   0.367           0.112          -0.177           0.145   0.515 
+O3_2           0.550                   0.134                           0.119 
+O3_3           0.597           0.103   0.155                           0.156 
+O3_4   0.247   0.453           0.125          -0.101                   0.572 
+O3_5           0.595                                                         
+O3_6   0.343   0.406                          -0.184  -0.139   0.198         
+O3_7   0.379   0.410           0.167                                   0.192 
+O3_8           0.644                           0.170          -0.133         
+O3_9  -0.116   0.549                   0.101           0.115                 
+O3_10  0.124                                  -0.139   0.329                 
+O4_1           0.152          -0.122           0.438          -0.104         
+O4_2                   0.359          -0.102   0.252           0.119         
+O4_3                   0.842  -0.156                                         
+O4_4   0.236                   0.325          -0.113           0.254         
+O4_5                   0.732                                                 
+O4_6   0.133          -0.316   0.556          -0.221  -0.115           0.112 
+O4_7   0.132           0.118           0.153                   0.396         
+O4_8                                           0.555                  -0.156 
+O4_9          -0.110   0.101                   0.159                         
+O4_10  0.151                   0.119                   0.132   0.490         
+O4_11          0.214                           0.271           0.248         
+O4_12 -0.150                           0.100   0.479                         
+
+               Factor1 Factor2 Factor3 Factor4 Factor5 Factor6 Factor7 Factor8
+SS loadings      3.706   3.484   1.633   1.556   1.253   1.218   1.107   1.076
+Proportion Var   0.081   0.076   0.036   0.034   0.027   0.026   0.024   0.023
+Cumulative Var   0.081   0.156   0.192   0.226   0.253   0.279   0.303   0.327
+               Factor9
+SS loadings      0.978
+Proportion Var   0.021
+Cumulative Var   0.348
+
+Test of the hypothesis that 9 factors are sufficient.
+The chi square statistic is 1118.72 on 657 degrees of freedom.
+The p-value is 1.46e-26 
+\end{verbatim}
+
+Confirmaremos la estructura de los datos con un cfa sobre la segunad
+mitad de los datos.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{moduloc2 }\OtherTok{\textless{}{-}} \FunctionTok{fusionar\_extremos}\NormalTok{(segunda\_mitad)}
+
+\NormalTok{modelo\_cfa }\OtherTok{\textless{}{-}}\StringTok{\textquotesingle{} }
+\StringTok{MR1 =\textasciitilde{} O3\_4 + O3\_1 + O3\_3 + O3\_2 + O3\_7 + O3\_9 + O2\_11 + O3\_8}
+\StringTok{MR11 =\textasciitilde{} O2\_8 + O1\_10 + O2\_9 + O2\_10 + O2\_13 + O1\_9}
+\StringTok{MR2 =\textasciitilde{} O2\_1 + O2\_2 + O2\_3 + O2\_5 + O2\_4}
+\StringTok{MR7 =\textasciitilde{} O2\_6 + O4\_6 + O4\_4 + O1\_6}
+\StringTok{MR3 =\textasciitilde{} O4\_3 + O4\_5 + O4\_2}
+\StringTok{MR6 =\textasciitilde{} O1\_5 + O1\_7 + O3\_10 + O1\_6}
+\StringTok{MR5 =\textasciitilde{} O4\_8 + O4\_1 + O4\_12 + O3\_8}
+\StringTok{MR4 =\textasciitilde{} O1\_4 + O1\_3 + O1\_1 + O1\_2 + O1\_9}
+\StringTok{MR10 =\textasciitilde{} O4\_11 + O4\_10 + O4\_7}
+\StringTok{MR1 =\textasciitilde{} O1\_6}
+\StringTok{MR11 =\textasciitilde{} O3\_7}
+\StringTok{MR11 =\textasciitilde{} O2\_5}
+\StringTok{MR11 =\textasciitilde{} O1\_7}
+\StringTok{MR2 =\textasciitilde{} O2\_8}
+\StringTok{MR2 =\textasciitilde{} O2\_10}
+\StringTok{MR1 =\textasciitilde{} O2\_13}
+\StringTok{MR11 =\textasciitilde{} O2\_11}
+\StringTok{MR2 =\textasciitilde{} O3\_9}
+\StringTok{MR2 =\textasciitilde{} O3\_8}
+\StringTok{MR1 \textasciitilde{}\textasciitilde{} MR11 + MR2 + MR7 + MR3 + MR6 + MR5 + MR4 + MR10}
+\StringTok{MR11 \textasciitilde{}\textasciitilde{} MR2 + MR7 + MR3 + MR6 + MR5 + MR4 + MR10}
+\StringTok{MR2 \textasciitilde{}\textasciitilde{} MR7 + MR3 + MR6 + MR5 + MR4 + MR10}
+\StringTok{MR7 \textasciitilde{}\textasciitilde{} MR3 + MR6 + MR5 + MR4 + MR10}
+\StringTok{MR3 \textasciitilde{}\textasciitilde{} MR6 + MR5 + MR4 + MR10}
+\StringTok{MR6 \textasciitilde{}\textasciitilde{} MR5 + MR4 + MR10}
+\StringTok{MR5 \textasciitilde{}\textasciitilde{} MR4 + MR10}
+\StringTok{MR4 \textasciitilde{}\textasciitilde{} MR10\textquotesingle{}}
+
+
+\NormalTok{fit\_afc }\OtherTok{\textless{}{-}} \FunctionTok{cfa}\NormalTok{(modelo\_cfa, }
+                       \AttributeTok{data =}\NormalTok{ moduloc2,}
+                      \AttributeTok{ordered =} \ConstantTok{TRUE}\NormalTok{,}
+                       \AttributeTok{estimator =} \StringTok{"WLSMV"}\NormalTok{)}
+
+\FunctionTok{summary}\NormalTok{(fit\_afc, }\AttributeTok{fit.measures =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{standardized =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+lavaan 0.6-20 ended normally after 145 iterations
+
+  Estimator                                       DWLS
+  Optimization method                           NLMINB
+  Number of model parameters                       244
+
+  Number of observations                           812
+
+Model Test User Model:
+                                              Standard      Scaled
+  Test Statistic                              1835.488    1773.034
+  Degrees of freedom                               653         653
+  P-value (Chi-square)                           0.000       0.000
+  Scaling correction factor                                  1.218
+  Shift parameter                                          265.676
+    simple second-order correction                                
+
+Model Test Baseline Model:
+
+  Test statistic                             23932.314   11251.922
+  Degrees of freedom                               741         741
+  P-value                                        0.000       0.000
+  Scaling correction factor                                  2.206
+
+User Model versus Baseline Model:
+
+  Comparative Fit Index (CFI)                    0.949       0.893
+  Tucker-Lewis Index (TLI)                       0.942       0.879
+                                                                  
+  Robust Comparative Fit Index (CFI)                         0.809
+  Robust Tucker-Lewis Index (TLI)                            0.783
+
+Root Mean Square Error of Approximation:
+
+  RMSEA                                          0.047       0.046
+  90 Percent confidence interval - lower         0.045       0.043
+  90 Percent confidence interval - upper         0.050       0.049
+  P-value H_0: RMSEA <= 0.050                    0.961       0.995
+  P-value H_0: RMSEA >= 0.080                    0.000       0.000
+                                                                  
+  Robust RMSEA                                               0.057
+  90 Percent confidence interval - lower                     0.054
+  90 Percent confidence interval - upper                     0.060
+  P-value H_0: Robust RMSEA <= 0.050                         0.000
+  P-value H_0: Robust RMSEA >= 0.080                         0.000
+
+Standardized Root Mean Square Residual:
+
+  SRMR                                           0.056       0.056
+
+Parameter Estimates:
+
+  Parameterization                               Delta
+  Standard errors                           Robust.sem
+  Information                                 Expected
+  Information saturated (h1) model        Unstructured
+
+Latent Variables:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+  MR1 =~                                                                
+    O3_4              1.000                               0.763    0.763
+    O3_1              0.983    0.038   25.763    0.000    0.750    0.750
+    O3_3              0.888    0.040   22.190    0.000    0.677    0.677
+    O3_2              0.746    0.043   17.352    0.000    0.569    0.569
+    O3_7              0.667    0.045   14.717    0.000    0.509    0.509
+    O3_9              0.770    0.053   14.551    0.000    0.587    0.587
+    O2_11             0.546    0.049   11.212    0.000    0.417    0.417
+    O3_8              1.040    0.059   17.684    0.000    0.794    0.794
+  MR11 =~                                                               
+    O2_8              1.000                               0.428    0.428
+    O1_10             1.341    0.139    9.674    0.000    0.574    0.574
+    O2_9              1.329    0.144    9.250    0.000    0.569    0.569
+    O2_10             1.583    0.192    8.254    0.000    0.678    0.678
+    O2_13             0.817    0.121    6.750    0.000    0.350    0.350
+    O1_9              0.675    0.122    5.545    0.000    0.289    0.289
+  MR2 =~                                                                
+    O2_1              1.000                               0.667    0.667
+    O2_2              0.937    0.076   12.403    0.000    0.625    0.625
+    O2_3              0.935    0.067   13.979    0.000    0.624    0.624
+    O2_5              0.726    0.075    9.629    0.000    0.484    0.484
+    O2_4              0.854    0.070   12.130    0.000    0.570    0.570
+  MR7 =~                                                                
+    O2_6              1.000                               0.861    0.861
+    O4_6             -0.818    0.040  -20.437    0.000   -0.704   -0.704
+    O4_4              0.552    0.044   12.423    0.000    0.475    0.475
+    O1_6              0.016    0.063    0.248    0.804    0.013    0.013
+  MR3 =~                                                                
+    O4_3              1.000                               0.837    0.837
+    O4_5              0.964    0.053   18.027    0.000    0.806    0.806
+    O4_2              0.529    0.048   11.061    0.000    0.443    0.443
+  MR6 =~                                                                
+    O1_5              1.000                               0.561    0.561
+    O1_7              1.077    0.145    7.439    0.000    0.604    0.604
+    O3_10             0.869    0.116    7.462    0.000    0.487    0.487
+    O1_6              0.163    0.098    1.666    0.096    0.092    0.092
+  MR5 =~                                                                
+    O4_8              1.000                               0.543    0.543
+    O4_1              1.270    0.145    8.752    0.000    0.689    0.689
+    O4_12             0.722    0.100    7.188    0.000    0.392    0.392
+    O3_8              0.558    0.112    4.983    0.000    0.303    0.303
+  MR4 =~                                                                
+    O1_4              1.000                               0.457    0.457
+    O1_3              0.732    0.127    5.768    0.000    0.335    0.335
+    O1_1              0.809    0.132    6.125    0.000    0.370    0.370
+    O1_2              1.807    0.264    6.842    0.000    0.826    0.826
+    O1_9              0.171    0.106    1.606    0.108    0.078    0.078
+  MR10 =~                                                               
+    O4_11             1.000                               0.121    0.121
+    O4_10             4.491    1.929    2.329    0.020    0.544    0.544
+    O4_7              4.165    1.794    2.322    0.020    0.505    0.505
+  MR1 =~                                                                
+    O1_6              0.512    0.072    7.077    0.000    0.390    0.390
+  MR11 =~                                                               
+    O3_7              0.614    0.110    5.595    0.000    0.263    0.263
+    O2_5              0.492    0.115    4.277    0.000    0.211    0.211
+    O1_7              0.382    0.132    2.891    0.004    0.163    0.163
+  MR2 =~                                                                
+    O2_8              0.453    0.060    7.566    0.000    0.302    0.302
+    O2_10             0.063    0.079    0.789    0.430    0.042    0.042
+  MR1 =~                                                                
+    O2_13             0.403    0.049    8.255    0.000    0.307    0.307
+  MR11 =~                                                               
+    O2_11             0.794    0.123    6.459    0.000    0.340    0.340
+  MR2 =~                                                                
+    O3_9             -0.452    0.071   -6.400    0.000   -0.301   -0.301
+    O3_8             -0.437    0.091   -4.799    0.000   -0.291   -0.291
+
+Covariances:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+  MR1 ~~                                                                
+    MR11              0.160    0.019    8.430    0.000    0.490    0.490
+    MR2               0.154    0.024    6.492    0.000    0.302    0.302
+    MR7               0.350    0.025   14.039    0.000    0.532    0.532
+    MR3              -0.130    0.027   -4.887    0.000   -0.203   -0.203
+    MR6               0.158    0.023    6.777    0.000    0.370    0.370
+    MR5              -0.100    0.021   -4.735    0.000   -0.241   -0.241
+    MR4               0.121    0.022    5.439    0.000    0.346    0.346
+    MR10              0.023    0.011    2.014    0.044    0.250    0.250
+  MR11 ~~                                                               
+    MR2               0.136    0.018    7.399    0.000    0.476    0.476
+    MR7               0.144    0.021    6.987    0.000    0.391    0.391
+    MR3              -0.063    0.018   -3.505    0.000   -0.177   -0.177
+    MR6               0.087    0.018    4.899    0.000    0.363    0.363
+    MR5              -0.058    0.015   -3.933    0.000   -0.249   -0.249
+    MR4               0.049    0.013    3.905    0.000    0.253    0.253
+    MR10              0.017    0.008    2.091    0.037    0.322    0.322
+  MR2 ~~                                                                
+    MR7               0.200    0.027    7.342    0.000    0.348    0.348
+    MR3               0.007    0.025    0.264    0.792    0.012    0.012
+    MR6               0.145    0.024    6.022    0.000    0.388    0.388
+    MR5              -0.160    0.024   -6.646    0.000   -0.443   -0.443
+    MR4              -0.045    0.016   -2.825    0.005   -0.147   -0.147
+    MR10              0.041    0.017    2.322    0.020    0.502    0.502
+  MR7 ~~                                                                
+    MR3              -0.420    0.028  -14.990    0.000   -0.582   -0.582
+    MR6               0.086    0.025    3.392    0.001    0.178    0.178
+    MR5              -0.211    0.028   -7.605    0.000   -0.452   -0.452
+    MR4               0.031    0.021    1.502    0.133    0.079    0.079
+    MR10              0.034    0.016    2.189    0.029    0.329    0.329
+  MR3 ~~                                                                
+    MR6              -0.001    0.024   -0.044    0.965   -0.002   -0.002
+    MR5               0.102    0.022    4.596    0.000    0.225    0.225
+    MR4              -0.001    0.020   -0.050    0.961   -0.003   -0.003
+    MR10              0.006    0.006    0.973    0.331    0.062    0.062
+  MR6 ~~                                                                
+    MR5              -0.064    0.020   -3.257    0.001   -0.209   -0.209
+    MR4              -0.018    0.016   -1.137    0.255   -0.069   -0.069
+    MR10              0.026    0.012    2.147    0.032    0.384    0.384
+  MR5 ~~                                                                
+    MR4               0.018    0.015    1.197    0.231    0.074    0.074
+    MR10             -0.028    0.013   -2.214    0.027   -0.432   -0.432
+  MR4 ~~                                                                
+    MR10              0.001    0.004    0.363    0.717    0.027    0.027
+
+Thresholds:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+    O3_4|t1          -0.964    0.052  -18.430    0.000   -0.964   -0.964
+    O3_4|t2          -0.174    0.044   -3.926    0.000   -0.174   -0.174
+    O3_4|t3           0.857    0.050   16.993    0.000    0.857    0.857
+    O3_4|t4           1.584    0.071   22.213    0.000    1.584    1.584
+    O3_1|t1          -1.190    0.057  -20.719    0.000   -1.190   -1.190
+    O3_1|t2          -0.460    0.046  -10.061    0.000   -0.460   -0.460
+    O3_1|t3           0.360    0.045    7.979    0.000    0.360    0.360
+    O3_1|t4           1.107    0.055   19.992    0.000    1.107    1.107
+    O3_3|t1          -0.167    0.044   -3.786    0.000   -0.167   -0.167
+    O3_3|t2           0.457    0.046    9.992    0.000    0.457    0.457
+    O3_3|t3           1.079    0.055   19.717    0.000    1.079    1.079
+    O3_3|t4           1.542    0.069   22.202    0.000    1.542    1.542
+    O3_2|t1          -0.419    0.045   -9.230    0.000   -0.419   -0.419
+    O3_2|t2           0.256    0.045    5.746    0.000    0.256    0.256
+    O3_2|t3           1.209    0.058   20.865    0.000    1.209    1.209
+    O3_2|t4           1.966    0.094   20.853    0.000    1.966    1.966
+    O3_7|t1          -0.771    0.049  -15.695    0.000   -0.771   -0.771
+    O3_7|t2          -0.167    0.044   -3.786    0.000   -0.167   -0.167
+    O3_7|t3           0.714    0.048   14.767    0.000    0.714    0.714
+    O3_7|t4           1.447    0.066   22.053    0.000    1.447    1.447
+    O3_9|t1           0.149    0.044    3.366    0.001    0.149    0.149
+    O3_9|t2           0.706    0.048   14.633    0.000    0.706    0.706
+    O3_9|t3           1.484    0.067   22.131    0.000    1.484    1.484
+    O3_9|t4           2.210    0.117   18.887    0.000    2.210    2.210
+    O2_11|t1         -1.372    0.063  -21.805    0.000   -1.372   -1.372
+    O2_11|t2         -0.457    0.046   -9.992    0.000   -0.457   -0.457
+    O2_11|t3          0.730    0.049   15.033    0.000    0.730    0.730
+    O2_11|t4          1.542    0.069   22.202    0.000    1.542    1.542
+    O3_8|t1           0.603    0.047   12.810    0.000    0.603    0.603
+    O3_8|t2           1.107    0.055   19.992    0.000    1.107    1.107
+    O3_8|t3           1.594    0.072   22.210    0.000    1.594    1.594
+    O3_8|t4           2.176    0.113   19.201    0.000    2.176    2.176
+    O2_8|t1          -1.758    0.080  -21.902    0.000   -1.758   -1.758
+    O2_8|t2          -1.222    0.058  -20.959    0.000   -1.222   -1.222
+    O2_8|t3          -0.433    0.046   -9.507    0.000   -0.433   -0.433
+    O2_8|t4           0.450    0.046    9.854    0.000    0.450    0.450
+    O1_10|t1         -1.046    0.054  -19.377    0.000   -1.046   -1.046
+    O1_10|t2         -0.523    0.046  -11.303    0.000   -0.523   -0.523
+    O1_10|t3          0.186    0.044    4.206    0.000    0.186    0.186
+    O1_10|t4          0.809    0.050   16.284    0.000    0.809    0.809
+    O2_9|t1          -1.222    0.058  -20.959    0.000   -1.222   -1.222
+    O2_9|t2          -0.383    0.045   -8.466    0.000   -0.383   -0.383
+    O2_9|t3           0.440    0.046    9.646    0.000    0.440    0.440
+    O2_9|t4           1.130    0.056   20.207    0.000    1.130    1.130
+    O2_10|t1         -1.421    0.065  -21.980    0.000   -1.421   -1.421
+    O2_10|t2         -0.710    0.048  -14.700    0.000   -0.710   -0.710
+    O2_10|t3          0.205    0.044    4.626    0.000    0.205    0.205
+    O2_10|t4          0.954    0.052   18.308    0.000    0.954    0.954
+    O2_13|t1         -1.051    0.054  -19.434    0.000   -1.051   -1.051
+    O2_13|t2         -0.262    0.045   -5.885    0.000   -0.262   -0.262
+    O2_13|t3          0.734    0.049   15.100    0.000    0.734    0.734
+    O2_13|t4          1.456    0.066   22.074    0.000    1.456    1.456
+    O1_9|t1          -1.628    0.073  -22.186    0.000   -1.628   -1.628
+    O1_9|t2          -1.165    0.057  -20.519    0.000   -1.165   -1.165
+    O1_9|t3          -0.471    0.046  -10.269    0.000   -0.471   -0.471
+    O1_9|t4           0.363    0.045    8.048    0.000    0.363    0.363
+    O2_1|t1          -2.287    0.126  -18.139    0.000   -2.287   -2.287
+    O2_1|t2          -1.716    0.078  -22.027    0.000   -1.716   -1.716
+    O2_1|t3          -1.051    0.054  -19.434    0.000   -1.051   -1.051
+    O2_1|t4          -0.186    0.044   -4.206    0.000   -0.186   -0.186
+    O2_2|t1          -1.988    0.096  -20.706    0.000   -1.988   -1.988
+    O2_2|t2          -1.512    0.068  -22.174    0.000   -1.512   -1.512
+    O2_2|t3          -0.722    0.048  -14.900    0.000   -0.722   -0.722
+    O2_2|t4          -0.167    0.044   -3.786    0.000   -0.167   -0.167
+    O2_3|t1          -1.803    0.083  -21.733    0.000   -1.803   -1.803
+    O2_3|t2          -1.216    0.058  -20.912    0.000   -1.216   -1.216
+    O2_3|t3          -0.366    0.045   -8.118    0.000   -0.366   -0.366
+    O2_3|t4           0.566    0.047   12.127    0.000    0.566    0.566
+    O2_5|t1          -1.628    0.073  -22.186    0.000   -1.628   -1.628
+    O2_5|t2          -0.959    0.052  -18.369    0.000   -0.959   -0.959
+    O2_5|t3          -0.282    0.045   -6.305    0.000   -0.282   -0.282
+    O2_5|t4           0.389    0.045    8.605    0.000    0.389    0.389
+    O2_4|t1          -1.729    0.079  -21.989    0.000   -1.729   -1.729
+    O2_4|t2          -1.203    0.058  -20.817    0.000   -1.203   -1.203
+    O2_4|t3          -0.682    0.048  -14.231    0.000   -0.682   -0.682
+    O2_4|t4          -0.102    0.044   -2.314    0.021   -0.102   -0.102
+    O2_6|t1          -0.710    0.048  -14.700    0.000   -0.710   -0.710
+    O2_6|t2          -0.180    0.044   -4.066    0.000   -0.180   -0.180
+    O2_6|t3           0.516    0.046   11.166    0.000    0.516    0.516
+    O2_6|t4           1.159    0.057   20.468    0.000    1.159    1.159
+    O4_6|t1          -1.413    0.064  -21.954    0.000   -1.413   -1.413
+    O4_6|t2          -0.537    0.046  -11.578    0.000   -0.537   -0.537
+    O4_6|t3           0.350    0.045    7.770    0.000    0.350    0.350
+    O4_6|t4           1.101    0.055   19.938    0.000    1.101    1.101
+    O4_4|t1          -1.552    0.070  -22.208    0.000   -1.552   -1.552
+    O4_4|t2          -0.559    0.047  -11.990    0.000   -0.559   -0.559
+    O4_4|t3           0.450    0.046    9.854    0.000    0.450    0.450
+    O4_4|t4           1.319    0.061   21.558    0.000    1.319    1.319
+    O1_6|t1           0.028    0.044    0.631    0.528    0.028    0.028
+    O1_6|t2           0.584    0.047   12.469    0.000    0.584    0.584
+    O1_6|t3           1.456    0.066   22.074    0.000    1.456    1.456
+    O1_6|t4           2.086    0.104   19.970    0.000    2.086    2.086
+    O4_3|t1          -1.430    0.065  -22.006    0.000   -1.430   -1.430
+    O4_3|t2          -0.663    0.048  -13.894    0.000   -0.663   -0.663
+    O4_3|t3          -0.009    0.044   -0.210    0.833   -0.009   -0.009
+    O4_3|t4           0.726    0.048   14.967    0.000    0.726    0.726
+    O4_5|t1          -1.493    0.067  -22.147    0.000   -1.493   -1.493
+    O4_5|t2          -0.718    0.048  -14.833    0.000   -0.718   -0.718
+    O4_5|t3          -0.031    0.044   -0.701    0.483   -0.031   -0.031
+    O4_5|t4           0.710    0.048   14.700    0.000    0.710    0.710
+    O4_2|t1          -1.262    0.059  -21.231    0.000   -1.262   -1.262
+    O4_2|t2          -0.171    0.044   -3.856    0.000   -0.171   -0.171
+    O4_2|t3           0.738    0.049   15.166    0.000    0.738    0.738
+    O4_2|t4           1.474    0.067   22.114    0.000    1.474    1.474
+    O1_5|t1          -0.907    0.051  -17.689    0.000   -0.907   -0.907
+    O1_5|t2          -0.311    0.045   -6.933    0.000   -0.311   -0.311
+    O1_5|t3           0.730    0.049   15.033    0.000    0.730    0.730
+    O1_5|t4           1.430    0.065   22.006    0.000    1.430    1.430
+    O1_7|t1          -1.357    0.062  -21.739    0.000   -1.357   -1.357
+    O1_7|t2          -0.671    0.048  -14.029    0.000   -0.671   -0.671
+    O1_7|t3           0.314    0.045    7.003    0.000    0.314    0.314
+    O1_7|t4           1.165    0.057   20.519    0.000    1.165    1.165
+    O3_10|t1         -2.035    0.100  -20.371    0.000   -2.035   -2.035
+    O3_10|t2         -1.474    0.067  -22.114    0.000   -1.474   -1.474
+    O3_10|t3         -0.174    0.044   -3.926    0.000   -0.174   -0.174
+    O3_10|t4          0.754    0.049   15.431    0.000    0.754    0.754
+    O4_8|t1          -0.742    0.049  -15.232    0.000   -0.742   -0.742
+    O4_8|t2           0.386    0.045    8.535    0.000    0.386    0.386
+    O4_8|t3           1.484    0.067   22.131    0.000    1.484    1.484
+    O4_8|t4           1.988    0.096   20.706    0.000    1.988    1.988
+    O4_1|t1          -0.562    0.047  -12.058    0.000   -0.562   -0.562
+    O4_1|t2           0.762    0.049   15.563    0.000    0.762    0.762
+    O4_1|t3           1.502    0.068   22.162    0.000    1.502    1.502
+    O4_1|t4           1.819    0.084   21.666    0.000    1.819    1.819
+    O4_12|t1         -1.130    0.056  -20.207    0.000   -1.130   -1.130
+    O4_12|t2         -0.015    0.044   -0.351    0.726   -0.015   -0.015
+    O4_12|t3          1.255    0.059   21.187    0.000    1.255    1.255
+    O4_12|t4          1.906    0.090   21.224    0.000    1.906    1.906
+    O1_4|t1          -0.686    0.048  -14.298    0.000   -0.686   -0.686
+    O1_4|t2          -0.012    0.044   -0.281    0.779   -0.012   -0.012
+    O1_4|t3           0.979    0.053   18.611    0.000    0.979    0.979
+    O1_4|t4           1.617    0.073   22.196    0.000    1.617    1.617
+    O1_3|t1          -1.677    0.076  -22.115    0.000   -1.677   -1.677
+    O1_3|t2          -1.107    0.055  -19.992    0.000   -1.107   -1.107
+    O1_3|t3          -0.224    0.044   -5.046    0.000   -0.224   -0.224
+    O1_3|t4           0.555    0.047   11.921    0.000    0.555    0.555
+    O1_1|t1          -0.771    0.049  -15.695    0.000   -0.771   -0.771
+    O1_1|t2           0.019    0.044    0.421    0.674    0.019    0.019
+    O1_1|t3           1.062    0.054   19.548    0.000    1.062    1.062
+    O1_1|t4           1.716    0.078   22.027    0.000    1.716    1.716
+    O1_2|t1           0.174    0.044    3.926    0.000    0.174    0.174
+    O1_2|t2           0.758    0.049   15.497    0.000    0.758    0.758
+    O1_2|t3           1.456    0.066   22.074    0.000    1.456    1.456
+    O1_2|t4           1.852    0.086   21.512    0.000    1.852    1.852
+    O4_11|t1         -0.848    0.050  -16.865    0.000   -0.848   -0.848
+    O4_11|t2          0.164    0.044    3.716    0.000    0.164    0.164
+    O4_11|t3          0.945    0.052   18.186    0.000    0.945    0.945
+    O4_11|t4          1.617    0.073   22.196    0.000    1.617    1.617
+    O4_10|t1         -1.542    0.069  -22.202    0.000   -1.542   -1.542
+    O4_10|t2         -0.629    0.047  -13.285    0.000   -0.629   -0.629
+    O4_10|t3          0.171    0.044    3.856    0.000    0.171    0.171
+    O4_10|t4          1.136    0.056   20.260    0.000    1.136    1.136
+    O4_7|t1          -1.702    0.077  -22.060    0.000   -1.702   -1.702
+    O4_7|t2          -0.884    0.051  -17.375    0.000   -0.884   -0.884
+    O4_7|t3          -0.227    0.044   -5.116    0.000   -0.227   -0.227
+    O4_7|t4           0.686    0.048   14.298    0.000    0.686    0.686
+
+Variances:
+                   Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
+   .O3_4              0.418                               0.418    0.418
+   .O3_1              0.437                               0.437    0.437
+   .O3_3              0.541                               0.541    0.541
+   .O3_2              0.676                               0.676    0.676
+   .O3_7              0.541                               0.541    0.541
+   .O3_9              0.671                               0.671    0.671
+   .O2_11             0.572                               0.572    0.572
+   .O3_8              0.371                               0.371    0.371
+   .O2_8              0.603                               0.603    0.603
+   .O1_10             0.670                               0.670    0.670
+   .O2_9              0.676                               0.676    0.676
+   .O2_10             0.512                               0.512    0.512
+   .O2_13             0.678                               0.678    0.678
+   .O1_9              0.899                               0.899    0.899
+   .O2_1              0.555                               0.555    0.555
+   .O2_2              0.610                               0.610    0.610
+   .O2_3              0.611                               0.611    0.611
+   .O2_5              0.624                               0.624    0.624
+   .O2_4              0.675                               0.675    0.675
+   .O2_6              0.259                               0.259    0.259
+   .O4_6              0.504                               0.504    0.504
+   .O4_4              0.774                               0.774    0.774
+   .O1_6              0.807                               0.807    0.807
+   .O4_3              0.300                               0.300    0.300
+   .O4_5              0.350                               0.350    0.350
+   .O4_2              0.804                               0.804    0.804
+   .O1_5              0.686                               0.686    0.686
+   .O1_7              0.537                               0.537    0.537
+   .O3_10             0.763                               0.763    0.763
+   .O4_8              0.705                               0.705    0.705
+   .O4_1              0.525                               0.525    0.525
+   .O4_12             0.846                               0.846    0.846
+   .O1_4              0.791                               0.791    0.791
+   .O1_3              0.888                               0.888    0.888
+   .O1_1              0.863                               0.863    0.863
+   .O1_2              0.317                               0.317    0.317
+   .O4_11             0.985                               0.985    0.985
+   .O4_10             0.704                               0.704    0.704
+   .O4_7              0.745                               0.745    0.745
+    MR1               0.582    0.033   17.656    0.000    1.000    1.000
+    MR11              0.183    0.035    5.284    0.000    1.000    1.000
+    MR2               0.445    0.047    9.446    0.000    1.000    1.000
+    MR7               0.741    0.037   20.118    0.000    1.000    1.000
+    MR3               0.700    0.043   16.331    0.000    1.000    1.000
+    MR6               0.314    0.050    6.268    0.000    1.000    1.000
+    MR5               0.295    0.044    6.672    0.000    1.000    1.000
+    MR4               0.209    0.042    4.931    0.000    1.000    1.000
+    MR10              0.015    0.012    1.211    0.226    1.000    1.000
+\end{verbatim}
+
+Pruebas de confiabilidad.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{modulocconf }\OtherTok{\textless{}{-}}\NormalTok{ moduloc\_corrected }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fusionar\_extremos}\NormalTok{()}
+
+\NormalTok{mr1}\OtherTok{\textless{}{-}}\NormalTok{ modulocconf }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(O3\_4, O3\_1, O3\_3, O3\_2, O3\_7, O3\_9, O2\_11, O3\_8)}
+\FunctionTok{alpha}\NormalTok{(}\FunctionTok{polychoric}\NormalTok{(mr1)}\SpecialCharTok{$}\NormalTok{rho)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+
+Reliability analysis   
+Call: alpha(x = polychoric(mr1)$rho)
+
+  raw_alpha std.alpha G6(smc) average_r S/N median_r
+      0.84      0.84    0.84      0.39 5.1     0.38
+
+    95% confidence boundaries 
+      lower alpha upper
+Feldt  0.58  0.84  0.96
+
+ Reliability if an item is dropped:
+      raw_alpha std.alpha G6(smc) average_r S/N  var.r med.r
+O3_4       0.80      0.80    0.80      0.37 4.1 0.0097  0.37
+O3_1       0.82      0.82    0.81      0.39 4.4 0.0082  0.38
+O3_3       0.81      0.81    0.81      0.37 4.2 0.0127  0.37
+O3_2       0.82      0.82    0.82      0.39 4.5 0.0136  0.40
+O3_7       0.82      0.82    0.82      0.39 4.4 0.0135  0.38
+O3_9       0.83      0.83    0.82      0.41 4.8 0.0095  0.41
+O2_11      0.82      0.82    0.83      0.40 4.7 0.0120  0.38
+O3_8       0.82      0.82    0.81      0.39 4.5 0.0097  0.38
+
+ Item statistics 
+         r r.cor r.drop
+O3_4  0.75  0.72   0.65
+O3_1  0.68  0.64   0.56
+O3_3  0.74  0.70   0.64
+O3_2  0.67  0.60   0.55
+O3_7  0.69  0.62   0.57
+O3_9  0.61  0.54   0.48
+O2_11 0.63  0.55   0.50
+O3_8  0.68  0.63   0.56
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{omega}\NormalTok{(mr1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Loading required namespace: GPArotation
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Documento_de_analisis_files/figure-pdf/unnamed-chunk-9-1.pdf}}
+
+\begin{verbatim}
+Omega 
+Call: omegah(m = m, nfactors = nfactors, fm = fm, key = key, flip = flip, 
+    digits = digits, title = title, sl = sl, labels = labels, 
+    plot = plot, n.obs = n.obs, rotate = rotate, Phi = Phi, option = option, 
+    covar = covar)
+Alpha:                 0.79 
+G.6:                   0.79 
+Omega Hierarchical:    0.58 
+Omega H asymptotic:    0.68 
+Omega Total            0.85 
+
+Schmid Leiman Factor loadings greater than  0.2 
+         g   F1*   F2*   F3*   h2   h2   u2   p2  com
+O3_4  0.50  0.58             0.59 0.59 0.41 0.43 1.96
+O3_1  0.44  0.60             0.56 0.56 0.44 0.34 1.86
+O3_3  0.78              0.62 1.00 1.00 0.00 0.62 1.89
+O3_2  0.47        0.22       0.31 0.31 0.69 0.71 1.86
+O3_7  0.44  0.40             0.36 0.36 0.64 0.53 2.11
+O3_9  0.41        0.50       0.42 0.42 0.58 0.40 1.94
+O2_11 0.39  0.39             0.30 0.30 0.70 0.50 2.05
+O3_8  0.47        0.51       0.49 0.49 0.51 0.46 2.01
+
+With Sums of squares  of:
+   g  F1*  F2*  F3*   h2 
+2.01 1.04 0.58 0.40 2.39 
+
+general/max  0.84   max/min =   6.04
+mean percent general =  0.5    with sd =  0.12 and cv of  0.24 
+Explained Common Variance of the general factor =  0.5 
+
+The degrees of freedom are 7  and the fit is  0.02 
+The number of observations was  1623  with Chi Square =  38.95  with prob <  2e-06
+The root mean square of the residuals is  0.02 
+The df corrected root mean square of the residuals is  0.03
+RMSEA index =  0.053  and the 10 % confidence intervals are  0.038 0.07
+BIC =  -12.79
+
+Compare this with the adequacy of just a general factor and no group factors
+The degrees of freedom for just the general factor are 20  and the fit is  0.54 
+The number of observations was  1623  with Chi Square =  876.81  with prob <  6.7e-173
+The root mean square of the residuals is  0.14 
+The df corrected root mean square of the residuals is  0.16 
+
+RMSEA index =  0.162  and the 10 % confidence intervals are  0.153 0.172
+BIC =  728.97 
+
+Measures of factor score adequacy             
+                                                 g  F1*   F2*  F3*
+Correlation of scores with factors            0.84 0.77  0.67 0.73
+Multiple R square of scores with factors      0.71 0.59  0.45 0.53
+Minimum correlation of factor score estimates 0.42 0.18 -0.10 0.06
+
+ Total, General and Subset omega for each subset
+                                                 g  F1*  F2*  F3*
+Omega total for total scores and subscales    0.85 0.76 0.64 1.00
+Omega general for total scores and subscales  0.58 0.34 0.35 0.62
+Omega group for total scores and subscales    0.22 0.42 0.29 0.38
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lavaan); }\FunctionTok{library}\NormalTok{(psych); }\FunctionTok{library}\NormalTok{(semPlot)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+Warning: package 'semPlot' was built under R version 4.4.3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{cfa}\NormalTok{(}\StringTok{"MR1 =\textasciitilde{} O3\_4 + O3\_1 + O3\_3 + O3\_2 + O3\_7 + O3\_9 + O2\_11 + O3\_8"}\NormalTok{, }
+           \AttributeTok{data =}\NormalTok{ modulocconf, }\AttributeTok{estimator =} \StringTok{"WLSMV"}\NormalTok{, }\AttributeTok{ordered =} \FunctionTok{colnames}\NormalTok{(mr1))}
+
+\NormalTok{a }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(}\FunctionTok{alpha}\NormalTok{(}\FunctionTok{polychoric}\NormalTok{(mr1)}\SpecialCharTok{$}\NormalTok{rho)}\SpecialCharTok{$}\NormalTok{total}\SpecialCharTok{$}\NormalTok{raw\_alpha, }\DecValTok{2}\NormalTok{)}
+\NormalTok{o }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(}\FunctionTok{omega}\NormalTok{(mr1, }\AttributeTok{poly =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{plot =} \ConstantTok{FALSE}\NormalTok{)}\SpecialCharTok{$}\NormalTok{omega.tot, }\DecValTok{2}\NormalTok{)}
+\NormalTok{fm }\OtherTok{\textless{}{-}} \FunctionTok{fitMeasures}\NormalTok{(fit, }\FunctionTok{c}\NormalTok{(}\StringTok{"cfi"}\NormalTok{,}\StringTok{"tli"}\NormalTok{,}\StringTok{"rmsea"}\NormalTok{,}\StringTok{"srmr"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{figure}[H]
+
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{Documento_de_analisis_files/figure-pdf/unnamed-chunk-10-1.pdf}}
+
+}
+
+\caption{\texttt{r\ paste0(\textquotesingle{}MR1.\ α\ ordinal\ =\ \textquotesingle{},\ round(alpha(polychoric(mr1)\$rho)\$total\$raw\_alpha,2),\ \textquotesingle{}\ \textbar{}\ ω\ =\ \textquotesingle{},\ round(omega(mr1,\ poly=TRUE,\ plot=FALSE)\$omega.tot,2))}}
+
+\end{figure}%
+
+
+
+
+\end{document}
