@@ -67,22 +67,43 @@ C3_7  C3_9 C3_12 C3_14 C3_16  C3_3  C3_8 C3_11  C3_1  C3_4  C3_6 C3_15
 modelo_actualizado <- '
   # Factor 1: Estatus, Marcas y Tecnología
   # Incluye C3.10 (marcas dicen algo) por su contenido y h2=0.182
-  PA1 =~ C3_7 + C3_9 + C3_12 + C3_14 + C3_10
+  PA1 =~ C3_7 + C3_9 + C3_12 + C3_14
 
-  # Factor 2: Hedonismo y Abastecimiento Familiar
-  PA2 =~ C3_8 + C3_11 + C3_3
-
+  PA2 =~ C3_8 + C3_11 + C3_3 
 
 '
+
+modulo1 <- datos %>% dplyr::select(starts_with("C3_")) %>% fusionar_extremos()
+modulo1 <- datos %>% dplyr::select(starts_with("C3_")) %>% fusionar_extremos()
+mitad <- floor(nrow(modulo1) / 2)
+
+# Mitad de arriba (de la fila 1 a la mitad)
+muestra_arriba <- head(modulo1, n = mitad)
+
+# Mitad de abajo (de la fila siguiente a la mitad hasta el final)
+muestra_abajo <- tail(modulo1, n = nrow(modulo1) - mitad)
+
 
 muestra_abajo <- muestra_abajo %>%
   mutate(across(starts_with("C3_"), ~ as.numeric(zap_labels(.x)))) 
 
-fit <- cfa(modelo_actualizado, data = muestra_arriba, estimator = "WLSMV", ordered = TRUE)
+fit <- cfa(modelo_actualizado, data = datos, estimator = "WLSMV", ordered = TRUE)
 
 summary(fit, standardized = TRUE, fit.measures = TRUE)
+modindices(fit)
 
 
-muestra_abajo %>% select(C3_7, C3_9, C3_12, C3_14, C3_10) %>% alpha()
+datos %>% select(C3_7, C3_9, C3_12, C3_14) %>% omega()
+
 muestra_abajo %>% select(C3_8, C3_11, C3_3) %>% alpha()
 
+
+scores_regresion <- lavPredict(fit, method = "regression")
+
+scores_regresion <- scores_regresion %>% as.data.frame()
+datos_final <- cbind(datos, scores_regresion)
+view(datos_final)
+
+install.packages("writexl")
+library(writexl)
+write_xlsx(datos_final, "datos+factores")
