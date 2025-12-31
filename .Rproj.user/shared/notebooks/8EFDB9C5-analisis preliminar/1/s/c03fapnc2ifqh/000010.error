@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error: inesperado ')' en \"anova2 <- aov(FS_Planificacion ~ dplyr::mutate(ESOCC, m15 = haven::as_factor(C2))$C2, ESOCC))\"\n"}

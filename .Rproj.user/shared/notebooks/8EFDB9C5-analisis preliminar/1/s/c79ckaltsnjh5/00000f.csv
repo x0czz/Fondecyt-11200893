@@ -1,0 +1,7 @@
+"0","#| message: false
+#| warning: false
+#| include: false
+library(labelled)
+"
+"2","Error en library(labelled): no hay paquete llamado ‘labelled’
+"

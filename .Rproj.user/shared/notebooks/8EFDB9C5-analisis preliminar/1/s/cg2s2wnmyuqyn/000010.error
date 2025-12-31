@@ -1,0 +1,1 @@
+{"frames":[],"message":"Error en var_label(subsetreg2) <- list(FS_Eficiencia = \"Eficiencia y Conservación de Recursos en el hogar\", : \n  no se pudo encontrar la función \"var_label<-\"\n"}

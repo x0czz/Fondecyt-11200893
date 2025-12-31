@@ -24,7 +24,9 @@ datos<- Encuesta_Sociedad_de_Consumo_2023 %>% select(SEXO, EDAD, EDADR, NSE, NSE
 modulo_C <- datos %>%
   select(C3_1:C3_16)
 ```
+
 MODULO C
+
 ```{r EFA Modulo c}
 
 polichoric_c <- polychoric(modulo_C)
@@ -34,7 +36,9 @@ fa.parallel(polichoric_c$rho, fa = "fa", n.iter = 100, cor = "poly", n.obs = 162
 fa(r = polichoric_c$rho, nfactors = 3, rotate = "oblimin")
 #Tanto las tres soluciones dan soluciones con cargas factoriales bajas. Los item de la bateria sugieren independencia entre si. Sugeriria no hacer escalas.
 ```
+
 MODULO O1
+
 ```{r subset bateria o1 }
 modulo_o1 <- datos %>% select(O1_1:O1_10)
 modulo_o1 <- modulo_o1 %>%
@@ -75,7 +79,9 @@ summary(fit, standardized = TRUE)
 modindices(fit)
 
 ```
+
 MODULO O COMPLETO.
+
 ```{r}
 moduloc <- datos %>% select(starts_with("O"))
 moduloc <- moduloc %>% select(-O5)

@@ -1,0 +1,13 @@
+"0","var_label(subsetreg2) <- list(
+  FS_Eficiencia = ""Eficiencia y Conservación de Recursos en el hogar"",
+  EDAD = ""Tramo de Edad del encuestado"",
+  SEXO = ""Sexo"",
+  O4_4 = ""Falta de tiempo para reciclar"",
+  O4_10 = ""Preferencia: Comprar nuevo vs. Reparar"",
+  O4_7 = ""Escepticismo: Utilidad real del reciclaje"",
+  O4_1 = ""Responsabilidad: Deber de reciclar""
+)
+"
+"2","Error en var_label(subsetreg2) <- list(FS_Eficiencia = ""Eficiencia y Conservación de Recursos en el hogar"", : 
+  no se pudo encontrar la función ""var_label<-""
+"

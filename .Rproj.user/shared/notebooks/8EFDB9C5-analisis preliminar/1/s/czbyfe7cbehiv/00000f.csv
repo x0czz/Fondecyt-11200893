@@ -1,0 +1,4 @@
+"0","reg2 <- lm (FS_Eficiencia~ EDAD + SEXO + O4_4 + O4_10 + O4_7 + O4_1)
+"
+"2","Error en eval(predvars, data, env): objeto 'FS_Eficiencia' no encontrado
+"

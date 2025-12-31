@@ -1,0 +1,3 @@
+"0","#| echo: false"
+"0","#| fig-subcap: ""Hombre - Mujer"""
+"0","grid.arrange(h1d1_grafico, h1d1_grafico2, ncol = 2)"

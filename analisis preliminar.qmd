@@ -1,0 +1,227 @@
+---
+title: "Análisis exploratorio"
+format: pdf
+editor: visual
+bibliography: referencias.bib
+---
+
+```{r}
+#| message: false
+#| warning: false
+#| include: false
+library(kableExtra)
+library(labelled)
+library(gridExtra)
+library(dplyr)
+library(haven)
+library(sjPlot)
+library(sjlabelled)
+library(ggplot2)
+Encuesta_Sociedad_de_Consumo_2023 <- read_sav("Encuesta Sociedad de Consumo 2023.sav")
+load("~/GitHub/Fondecyt-11200893/ESOCC_FSCORES.RData")
+#HIPOTESIS A PROBAR SEGUN BIBLIOGRAFIA
+# A mayor educacion, Mayor consumo critico.
+h1a <- cor.test(ESOCC$M4, ESOCC$FS_Consumo_Critico)
+cor1a <- h1a$estimate
+p1a <- h1a$p.value
+cor.test(ESOCC$M4, ESOCC$MR2)
+
+#A mayor clase social, mayor consumo critico.
+h1b <- ESOCC %>%
+  mutate(NSE_inv = 8 - as.numeric(NSE)) %>% # Creamos la versión inversa
+  { cor.test(.$NSE_inv, .$FS_Consumo_Critico) }
+cor1b <- h1b$estimate
+p1b <- h1b$p.value
+
+#A Mayor edad mayor consumo critico.
+h1c <- cor.test(ESOCC$EDAD, ESOCC$FS_Consumo_Critico)
+cor1c <- h1c$estimate
+p1c <- h1c$p.value
+
+#Las mujeres participan mas del buycott
+h1da <- t.test(as.numeric(O3_4)~ SEXO, Encuesta_Sociedad_de_Consumo_2023)
+h1dadif <- h1da$estimate
+p1da <- h1da$p.value
+
+h1db <- t.test(as.numeric(O3_1)~ SEXO, Encuesta_Sociedad_de_Consumo_2023)
+h1bddif <- h1db$estimate
+p1db <- h1db$p.value
+
+h1d1_grafico <- ggplot(Encuesta_Sociedad_de_Consumo_2023,
+       aes(x = SEXO, y = as.numeric(O3_4))) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_cl_normal,
+               geom = "errorbar", width = 0.2) +
+  labs(x = "",
+       y = "Media",
+       title = "Buycot") +
+  theme_minimal()
+
+
+#A mayor edad, mayor consumo critico
+h1e <- cor.test(ESOCC$EDAD, ESOCC$FS_Consumo_Critico)
+cor1e <- h1e$estimate
+p1e <- h1e$p.value
+
+h1d1_grafico2 <- ggplot(Encuesta_Sociedad_de_Consumo_2023,
+             aes(x = SEXO, y = as.numeric(O3_1))) +
+  stat_summary(fun = mean, geom = "point", size = 3) +
+  stat_summary(fun.data = mean_cl_normal,
+               geom = "errorbar", width = 0.2) +
+  labs(x = "",
+       y = "",
+       title = "Boicot") +
+  theme_minimal()
+
+#Estudiantes y trabajadores domesticos mas propensos a consumir criticamente
+ESOCC$O3_1 <- factor(ESOCC$O3_1, levels = sort(unique(ESOCC$O3_4)),ordered = TRUE)
+#Gente que nunca ha trabajado, participan menos en el consumo critico
+
+
+# La bibliografia indica que, los diferentes recursos pueden incidir mas en el buycot que en el boycot;
+
+# los recursos por lo tanto predicen mejor el buycot que el boycot
+
+subsetreg <- ESOCC %>% 
+  select(FS_Consumo_Critico, SEXO, NSE, EDAD, M4) %>% 
+  mutate(
+    NSE_inv = 8 - as.numeric(NSE),
+    SEXO = as_factor(SEXO),
+    M4 = set_label(M4, label = "Educación")
+  )
+
+reg1 <- lm(FS_Consumo_Critico~ EDAD + NSE_inv+ M4, subsetreg)
+
+tabreg1 <- tab_model(
+  reg1, 
+  show.std = "std",      
+  show.est = TRUE,       
+  show.ci = FALSE,       
+  p.style = "numeric",   
+  string.std = "std(b)"
+)
+
+
+
+subsetreg2 <- ESOCC %>% 
+  select(FS_Eficiencia, EDAD, SEXO, O4_4, O4_10, O4_7, O4_1) %>%
+  mutate(
+    # 1. Invertir las escalas O4 (de 5-1 a 1-5)
+    across(c(O4_4, O4_10, O4_7, O4_1), ~ 6 - .),
+    SEXO = as.factor(SEXO)
+  )
+var_label(subsetreg2) <- list(
+  FS_Eficiencia = "Eficiencia y Conservación de Recursos en el hogar",
+  EDAD = "Tramo de Edad del encuestado",
+  SEXO = "",
+  O4_4 = "Falta de tiempo para reciclar",
+  O4_10 = "Preferencia: Comprar nuevo vs. Reparar",
+  O4_7 = "Escepticismo: Utilidad real del reciclaje",
+  O4_1 = "Responsabilidad: Deber de reciclar"
+)
+reg2 <- lm (FS_Eficiencia~ EDAD + SEXO + O4_4 + O4_10 + O4_7 + O4_1, subsetreg2)
+tabreg2 <- tab_model(
+  reg2, 
+  show.std = "std",      
+  show.est = TRUE,       
+  show.ci = FALSE,       
+  p.style = "numeric",
+  string.std = "std(b)"
+)
+#Test anova
+anova <- aov(FS_Planificacion ~ dplyr::mutate(ESOCC, C2 = haven::as_factor(C2))$C2, ESOCC)
+summary(anova)
+TukeyHSD(anova)
+
+anova2 <- aov(FS_Planificacion ~ dplyr::mutate(ESOCC, M15 = haven::as_factor(M15))$M15, ESOCC)
+summary(anova2)
+TukeyHSD(anova2)
+```
+
+### Modelos de medida.
+
+Se realizó un analisis factorial a partir de las baterias O1, O2, O3 y O4. Se optó por la siguiente solucion.
+
+![](modelos/Captura%20de%20pantalla%202025-12-29%20143932.png){fig-align="center"}
+
+El modelo corresponde a una estructura de tres factores. El primer factor agrupa conductas de activismo y conciencia ambiental, destacando los ítems de buycot y boicot por causa medioambiental con las cargas más altas del factor (0.786 y 0.769 respectivamente); el factor obtuvo niveles de consistencia interna sobresalientes reflejados en los coeficientes alfa ordinal y omega de McDonald. Este factor podría funcionar como una potencial operacionalización del consumo crítico orientado a la sostenibilidad medioambiental.
+
+Por otro lado, el segundo factor representa elementos relacionados a la eficiencia de recursos del hogar, donde se incluyen hábitos cotidianos como el apagado de luces o el ahorro de agua, manteniendo una confiabilidad sólida de omega (0.78). Este factor podría funcionar como potencial operacionalización de la eficiencia doméstica o el ahorro sustentable de recursos.
+
+El tercer factor identificado es la Planificación del Consumo, el cual se centra en la organización financiera y de compras, con su mayor carga en la planificación de alimentos (0.772) y una confiabilidad aceptable de 0.72. Este factor podría funcionar como potencial operacionalización de la gestión económica del hogar y la conducta de compra organizada.
+
+En cuanto a las relaciones entre estas dimensiones, se observa que todos los factores están correlacionados positivamente, siendo el vínculo entre la Eficiencia (F2) y la Planificación (F3) el más intenso con un valor de 0.611, lo que sugiere que las personas más organizadas en sus presupuestos tienden también a ser más cuidadosas con los recursos del hogar.
+
+**Comentario:** Se sugiere discutir las soluciones alternativas para el modelo. Si bien la estructura actual presenta una discriminación clara y un ajuste satisfactorio, se recortaron ítems con relevancia teórica y buena capacidad discriminante porque afectaban de manera moderada el ajuste global.
+
+## Hipótesis previas.
+
+Según @gallego_inequality_2007; a mayor educacion y clase, mayor consumo critico. Tambien indica que las mujeres suelen adoptar como forma de participacion al consumo mas que los hombres; las mujeres participan del buycott y boicott mas que los hombres.
+
+-   H1a: A mayor nivel educacional alcanzado, mayor consumo critico.
+
+-   H1b: A mayor NSE, mayor consumo critico.
+
+-   H1c: A mayor edad, mayor consumo critico.
+
+-   H1d: Las mujeres reportan mayor frecuencia en buycott que los hombres.
+
+-   H1e: Las mujeres reportan mayor frecuencia en boicot que los hombres.
+
+------------------------------------------------------------------------
+
+La correlacion entre la variable educacion y el consumo critico fue de R =`r round(cor1a, 2)`, P = `r format.pval(p1a, digits = 3, eps = 0.001)`. Efecto positivo, muy pequeño y no significativo. No cuenta con evidencia a favor de H1a.
+
+La relacion entre el nivel socioeconomico y el consumo critico fue de R= `r round(cor1b, 2)`, P = `r format.pval(p1b, digits = 3, eps = 0.001)` Efecto positivo, muy pequeño y significativo. Se cuenta con evidencia a favor de H1b.
+
+La relacion entre la edad y el consumo critivo fue de R= `r round(cor1c, 2)`, P = `r  format.pval(p1c, digits = 3, eps = 0.001)` Efecto positivo, pequeño y significativo. Se cuenta con evidencia a favor de H1c.
+
+```{r}
+#| echo: false
+#| fig-subcap: "Hombre - Mujer"
+grid.arrange(h1d1_grafico, h1d1_grafico2, ncol = 2)
+```
+
+En la conducta de comprar productos específicamente por su bajo impacto ambiental (O3_4), los hombres presentaron una media ligeramente superior (M=2.70) a la de las mujeres (M=2.65). No obstante, esta diferencia de 0.05 puntos no resultó estadísticamente significativa (p=0.405). Por lo tanto, no se dispone de evidencia suficiente para rechazar la hipótesis nula, sugiriendo que hombres y mujeres realizan esta acción con una frecuencia similar.
+
+Respecto a la decisión de dejar de comprar productos que dañan el medioambiente(O3_1), se observó que las mujeres presentan una media superior (M=3.12) en comparación con los hombres (M=3.04). A pesar de esta diferencia de 0.08 puntos a favor del grupo femenino, el análisis no alcanzó niveles de significancia estadística (p=0.137). En consecuencia, no se encuentra evidencia suficiente para afirmar que existan diferencias sistemáticas en la práctica del boicot entre ambos sexos.
+
+```{r tabl1}
+#| echo: false
+#| fig_cap: "Consumo critico"
+tabreg1
+```
+
+Controlando por el resto de las variables incluidas en el modelo, la edad fue el único predictor que mostró un efecto robusto, manteniendo su significancia estadística y presentando una variación mínima en el coeficiente estandarizado.
+
+------------------------------------------------------------------------
+
+## Hipótesis dimensión 2.
+
+@moraga-villablanca2025 identificaron en su estudio un factor conceptualmente similar, y sugieren que la percepción de facilidad o bajo esfuerzo, junto con el conocimiento y las creencias, constituyen buenos predictores de la eficacia y la conservación de recursos en el hogar.
+
+Con base en estos antecedentes, se plantean las siguientes hipótesis:
+
+-   H1a. La falta de tiempo (*“No tengo tiempo para hacerme cargo…”*) tendrá un efecto negativo sobre el Factor 2.
+
+-   H1b. La preferencia por lo nuevo (*“Es mejor comprar algo nuevo que reparar”*), en comparación con la reparación, tendrá un efecto negativo sobre el Factor 2.
+
+-   H1c. El escepticismo (*“Me cuesta creer que un envase reciclado sirva de algo”*) tendrá un efecto negativo sobre el Factor 2.
+
+-   H1d. El sentido del deber (*“Es necesario hacerse cargo…”*) tendrá un efecto positivo sobre el Factor 2.
+
+```{r tabl2}
+#| echo: false
+#| fig_cap: "Regresión sobre F2"
+tabreg2
+```
+
+Los resultados del modelo mostraron que, controlando por sexo y edad, la falta de tiempo para reciclar tuvo un efecto negativo y significativo sobre la eficiencia doméstica (β= −0.13, p \< .001). De igual manera, la preferencia por comprar productos nuevos en lugar de reparar presentó un efecto negativo significativo (β = −0.15, p \< .001), al igual que el escepticismo respecto a la utilidad real del reciclaje (β = −0.09, p \< .001). Por otro lado, el sentido del deber de reciclar tuvo un efecto positivo y significativo (β = 0.14, p \< .001), indicando que esta motivación normativa favorece la eficiencia doméstica. Además, el tramo de edad mostró un efecto positivo significativo (β = 0.19, p \< .001), y el sexo femenino también se asoció con una mayor eficiencia doméstica (β = 0.15, p = .002). Aunque el modelo explica una proporción relativamente baja de la varianza del Factor 2, resulta útil para identificar relaciones robustas y significativas tras controlar por variables demográficas y otros el resto de predictores.
+
+**Comentario:** En el análisis factorial inicial, la batería O4 mostró una baja discriminación entre factores, lo que sugiere que sus ítems no agrupaban de manera clara en un solo constructo. Podría considerarse construir un modelo de medida independiente para esta batería, a modo de operacionalizar de mejor forma el constructo de escepticismo o la disposición al reciclaje.
+
+## Dimensión planificación.
+
+El test de Tukey permitió identificar las diferencias específicas entre los grupos de la variable `C2` ("*uso del dinero disponible luego de solventar gastos"*) en relación con la planificación financiera (`FS_Planificacion`). Los resultados indican que los grupos *“Nunca me sobra”*, *“Me doy un gusto a mí mismo”* y *“Salgo a vitrinear para ver si encuentro algo”* presentaron medias significativamente menores que el grupo *“No lo gasto y lo ahorro”* (diff = −0.20; p adj \< 0.05), indicando que quienes priorizan ahorrar presentan mejor planificación financiera. En cambio, las demás comparaciones entre grupos no mostraron diferencias significativas, lo que sugiere que la mayoría de los niveles del factor `C2` son estadísticamente similares respecto a la variable evaluada. Estos hallazgos permiten discriminar de manera más precisa qué comportamientos financieros se asocian con una mayor planificación en el hogar.
+
+Se repitió la prueba para evaluar si existen diferencias en la planificación financiera (`FS_Planificacion`) según los grupos de la variable M15 ("situación de endudamiento") El test de Tukey reveló que únicamente la comparación entre *“Menos endeudado que 3 años atrás”* y *“Más endeudado que 3 años atrás”* fue significativa (diff = 0.108; p adj = 0.020), indicando que quienes presentan menor endeudamiento actual tienen una mayor planificación financiera que quienes están más endeudados. Las demás comparaciones entre niveles no resultaron significativas. En general, estos resultados permiten identificar relaciones robustas entre el nivel de endeudamiento y la conducta de planificación financiera, incluso tras controlar por la variabilidad introducida por otras variables del conjunto de datos.
