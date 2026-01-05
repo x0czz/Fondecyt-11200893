@@ -1,0 +1,26 @@
+{
+    "id": "ED4C8B14",
+    "path": "~/GitHub/Fondecyt-11200893/script.R",
+    "project_path": "script.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1767326801194.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "34,37",
+        "scrollLine": "18"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1767044604,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1767336709104,
+    "read_only": false,
+    "read_only_alternatives": []
+}

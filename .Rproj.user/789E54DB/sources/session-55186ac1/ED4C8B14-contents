@@ -12,8 +12,20 @@ modelo_cfa <- '
   # Separado de "Defensa" para mantener pureza
   Planificacion =~ O1_10 + O2_8 + O2_9
   # Correlación de error necesaria
+  
+  # Factor 4
+  F4 =~ O4_2 + O4_3 + O4_5
+  F5 =~ O4_1 + O4_8 + O4_12
    O3_2 ~~  O3_3
 '
+
+modelo_cfa <- modelo_cfa <- '
+  
+  # Factor 4
+  F4 =~ O4_2 + O4_3 + O4_5
+  F5 =~ O4_1 + O4_8 + O4_12
+'
+
 library(lavaan)
 fit_afc <- cfa(modelo_cfa, 
                data = Encuesta_Sociedad_de_Consumo_2023,
@@ -21,7 +33,7 @@ fit_afc <- cfa(modelo_cfa,
                estimator = "WLSMV")
 
 summary(fit_afc, fit.measures = TRUE, standardized = TRUE)
-modindices(fit_afc)
+nbmodindices(fit_afc)
 cor_factores <- inspect(fit_afc, "cor.lv")
 cor_factores
 
@@ -66,8 +78,6 @@ efa_modulo <- fa(muestra_arriba, nfactors = 3, rotate = "varimax", fm = "pa")
 print(efa_modulo, cut = 0.3)
 round(efa_modulo$residual, 2)
 
-C3_7  C3_9 C3_12 C3_14 C3_16  C3_3  C3_8 C3_11  C3_1  C3_4  C3_6 C3_15 
-0.456 0.324 0.490 0.268 0.327 0.417 0.295 0.322 0.173 0.108 0.155 0.247 
 
 modelo_actualizado <- '
   # Factor 1: Estatus, Marcas y Tecnología
@@ -141,6 +151,7 @@ fit_tempo <- cfa(fit_temp,
                data = Encuesta_Sociedad_de_Consumo_2023,
                ordered = TRUE,
                estimator = "WLSMV")
+summary(fit_tempo, fit.measures = TRUE, standardized = TRUE)
 
 factor_scores <- lavPredict(fit_tempo)
 factor_scores_df <- as.data.frame(factor_scores)
