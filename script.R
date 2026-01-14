@@ -14,6 +14,11 @@ modelo_cfa <- '
   # Correlación de error necesaria
    O3_2 ~~  O3_3
 '
+
+
+
+
+
 library(lavaan)
 fit_afc <- cfa(modelo_cfa, 
                data = Encuesta_Sociedad_de_Consumo_2023,

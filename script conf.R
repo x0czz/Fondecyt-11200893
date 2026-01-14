@@ -1,6 +1,7 @@
 #Analisis bateria completa.
 
-analisis_factorial <- datos %>% select(starts_with(c("C3_","O1_","O2_","O3_", "O4_")))
+analisis_factorial <- Encuesta_Sociedad_de_Consumo_2023 %>%
+  dplyr::select(as.numeric(O4_1:O4_12))
 
 #Separar la muestra en dos para exploratorio y confirmatorio
 
@@ -13,20 +14,35 @@ mitad_arriba <- analisis_factorial %>%
 mitad_abajo <- analisis_factorial %>% 
   slice((punto_medio + 1):n_total)
 
+mitad_abajo_cfa <- mitad_abajo %>%
+  mutate(across(starts_with("O4_"), ~ as.numeric(.)))
 
 
+library(psych)
 library(paran)
 fa.parallel(analisis_factorial, fa="fa")
 paran(analisis_factorial, iterations = 1000)
 
 
-efa_modulo <- fa(mitad_arriba, nfactors = 15, rotate = "varimax", fm = "pa")
+efa_modulo <- fa(mitad_arriba, nfactors = 3, rotate = "varimax", fm = "pa")
 print(efa_modulo, cut = 0.3)
 round(efa_modulo$residual, 2)
 
 library(psych)
 matrizpoli <- polychoric(datos) %>% select(C3_7, C3_9, C3_12, C3_14)
 
+library(lavaan)
+modelult <- '
+F1 =~ O4_2 + O4_3 + O4_5 + O4_6
+F2 =~ O4_1 + O4_8 + O4_12 + O4_6
+'
+
+Fit_modelult <- cfa(modelult, 
+              data = mitad_abajo,
+              ordered = TRUE,
+              estimator = "WLSMV")
+summary(Fit_modelult, fit.measures = TRUE, standardized = TRUE)
+modindices(Fit_modelult)
 
 matrizpoli <- ESOCC %>%
   dplyr::select(O1_10, O2_8, O2_9) %>%

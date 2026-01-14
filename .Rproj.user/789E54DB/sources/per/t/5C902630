@@ -3,7 +3,7 @@
     "path": "~/GitHub/Fondecyt-11200893/analisis preliminar.qmd",
     "project_path": "analisis preliminar.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "2939819901",
     "contents": "",
     "dirty": false,
     "created": 1766958684506.0,
@@ -19,14 +19,14 @@
         "scrollLine": "0",
         "docOutlineVisible": "1",
         "rmdVisualCollapsedChunks": "",
-        "rmdVisualModeLocation": "97:0"
+        "rmdVisualModeLocation": "2:0"
     },
     "folds": "",
     "lastKnownWriteTime": 1767050518,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1767050518459,
+    "last_content_update": 1767797306464,
     "read_only": false,
     "read_only_alternatives": []
 }
