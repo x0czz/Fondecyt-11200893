@@ -3,7 +3,7 @@
     "path": "~/GitHub/Fondecyt-11200893/script conf.R",
     "project_path": "script conf.R",
     "type": "r_source",
-    "hash": "3882299276",
+    "hash": "28890779",
     "contents": "",
     "dirty": false,
     "created": 1766866443437.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled2",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "44,0",
-        "scrollLine": "0"
+        "cursorPosition": "39,0",
+        "scrollLine": "34"
     },
     "folds": "",
-    "lastKnownWriteTime": 1767652046,
+    "lastKnownWriteTime": 1768449701,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1767652046726,
+    "last_content_update": 1768449701023,
     "read_only": false,
     "read_only_alternatives": []
 }

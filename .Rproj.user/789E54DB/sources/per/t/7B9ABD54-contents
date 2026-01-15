@@ -1,7 +1,8 @@
 #Analisis bateria completa.
 
 analisis_factorial <- Encuesta_Sociedad_de_Consumo_2023 %>%
-  dplyr::select(as.numeric(O4_1:O4_12))
+  dplyr::select(O1_1:O1_9) %>%
+  dplyr::mutate(across(everything(), as.numeric))
 
 #Separar la muestra en dos para exploratorio y confirmatorio
 
@@ -17,6 +18,8 @@ mitad_abajo <- analisis_factorial %>%
 mitad_abajo_cfa <- mitad_abajo %>%
   mutate(across(starts_with("O4_"), ~ as.numeric(.)))
 
+mitad_arriba <- mitad_arriba %>%
+  dplyr::select(-O1_10)
 
 library(psych)
 library(paran)
@@ -24,7 +27,7 @@ fa.parallel(analisis_factorial, fa="fa")
 paran(analisis_factorial, iterations = 1000)
 
 
-efa_modulo <- fa(mitad_arriba, nfactors = 3, rotate = "varimax", fm = "pa")
+efa_modulo <- fa(mitad_arriba, nfactors = 2, rotate = "varimax", fm = "pa")
 print(efa_modulo, cut = 0.3)
 round(efa_modulo$residual, 2)
 
@@ -33,9 +36,11 @@ matrizpoli <- polychoric(datos) %>% select(C3_7, C3_9, C3_12, C3_14)
 
 library(lavaan)
 modelult <- '
-F1 =~ O4_2 + O4_3 + O4_5 + O4_6
-F2 =~ O4_1 + O4_8 + O4_12 + O4_6
+F1 =~ O1_1 + O1_3 + O1_4 + O1_2
+F2 =~ O1_5 + O1_6 + O1_7
 '
+
+modindices(Fit_modelult)
 
 Fit_modelult <- cfa(modelult, 
               data = mitad_abajo,

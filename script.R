@@ -15,7 +15,23 @@ modelo_cfa <- '
    O3_2 ~~  O3_3
 '
 
+modelo_cfa <- '
+  # Factor 1: Consumo Crítico
+  Consumo_Critico =~ O3_1 + O3_4 + O2_11 + O3_2 + O3_3 + O3_7
 
+  # Factor 2: Eficiencia y Ahorro (Dim economica-Ambiental)
+  # Ahorro energetico quiza
+  Eficiencia_Hogar =~ O2_1 + O2_2 + O2_3 + O2_5 + O2_4
+
+  # Factor 3: Planificación de Gasto (Racionalidad (?
+  Planificacion =~ O1_10 + O2_8 + O2_9
+  
+  Facilidad_reciclaje =~ O4_2 + O4_3 + O4_5
+  Percep_responsabilidad  =~ O4_1 + O4_8 + O4_12
+  
+  # orrelación de error
+   O3_2 ~~  O3_3
+'
 
 
 
@@ -26,6 +42,8 @@ fit_afc <- cfa(modelo_cfa,
                estimator = "WLSMV")
 
 summary(fit_afc, fit.measures = TRUE, standardized = TRUE)
+
+
 modindices(fit_afc)
 cor_factores <- inspect(fit_afc, "cor.lv")
 cor_factores
@@ -138,14 +156,21 @@ fit_temp <- '
   # Factor 3: Planificación de Gasto (Racionalidad)
   # Separado de "Defensa" para mantener pureza
   Planificacion =~ O1_10 + O2_8 + O2_9
+  
+  Facilidad_reciclaje =~ O4_2 + O4_3 + O4_5
+  Percep_responsabilidad  =~ O4_1 + O4_8 + O4_12
+  
   # Correlación de error necesaria
    O3_2 ~~  O3_3
 '
+
 
 fit_tempo <- cfa(fit_temp, 
                data = Encuesta_Sociedad_de_Consumo_2023,
                ordered = TRUE,
                estimator = "WLSMV")
+
+summary(fit_tempo, fit.measures = TRUE, standardized = TRUE)
 
 factor_scores <- lavPredict(fit_tempo)
 factor_scores_df <- as.data.frame(factor_scores)
