@@ -1,5 +1,5 @@
-#HIPOTESIS A PROBAR SEGUN BIBLIOGRAFIA
-options(sci)
+
+options(scipen = 999)
 # A mayor educacion, Mayor consumo critico.
 cor.test(ESOCC$M4, ESOCC$MR1)
 cor.test(ESOCC$M4, ESOCC$MR2)

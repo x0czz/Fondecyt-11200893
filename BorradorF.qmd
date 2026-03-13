@@ -1,0 +1,124 @@
+---
+title: "Consumo responsable en Chile."
+format: html
+editor: visual
+---
+
+```{r}
+library(psych)
+library(dplyr)
+library(knitr)
+library(summarytools)
+library(haven)
+```
+
+## El consumo en chile.
+
+En la actualidad, el consumo lejos de entenderse simplemente como el acto de adquirir bienes para satisfacer necesidades básicas, se configura como el principal eje articulador de la identidad y la subjetividad en la modernidad.
+
+Según **Cristoffanini (2001)**, las sociedades enfrentan una falta de correspondencia entre sus ideales y la realidad, y para manejar esta frustración producto de esta brecha, los individuos recurren a la "estrategia de desplazamiento", donde los ideales se trasladan al "futuro desarrollado"; Una meta temporal inalcanzable e indefinidamente postergada. El consumo de objetos en este contexto se convierte en aquellos fragmentos que permiten materializar esos ideales de aquel futuro indefinidamente postergado en el "aquí y el ahora".
+
+Esta gratificación inmediata; según **Moulian (1997)**, se sostiene sobre una "ciudadanía crediticia", donde la identidad se construye en la capacidad de acceso al mercado. El consumo opera como un dispositivo de domesticación: el placer del objeto compensa el disciplinamiento del trabajo, mientras que el endeudamiento asegura la reproducción del orden social. Así, se enfatiza la dimensión del consumo como un paliativo ante la frustración del subdesarrollo, y la figura del "consumidor" se erige como la antítesis y el reemplazo del "ciudadano". La ciudadanía deja de ser un ejercicio de participación en el espacio público para transformarse en una "ciudadanía crediticia", donde la pertenencia no se mide por la incidencia política, sino por la capacidad de acceso al mercado. El consumo opera entonces como un rito de integración que domestica al individuo, ofreciendo el placer del objeto como compensación al disciplinamiento laboral, y convirtiendo la libertad en una fachada que depende enteramente de la solvencia financiera y la aceptación sumisa de las reglas del mercado.
+
+Los resultados de la encuesta *Sociedad de Consumo* revelan un cambio de paradigma en la construcción de la identidad en Chile. Al observar que la categoría 'Gustos e intereses personales' posee similar peso estadístico al sentido de pertenencia nacional ('Ser chileno'), se hace evidente una erosión de los grandes relatos de identidad colectiva. Este fenómeno sugiere un desplazamiento desde una identidad heredada hacia una identidad construida desde el 'yo consumidor', donde las afinidades electivas sustituyen a la nación como el principal eje de cohesión.
+
+De la misma forma, sólo el 51% de los chilenos elige definirse antes como ciudadano que como consumidor.
+
+## Retailizacion de la deuda.
+
+Según Marambio-Tapia, el modelo neoliberal chileno se sostiene sobre la "retailización" del crédito. En Chile fueron las grandes tiendas de consumo masivo las que lideraron la bancarización de los sectores populares, proceso que no solo democratizó el acceso a bienes, sino que significó una mutación cultural en la percepción de la deuda. González López (2018) lo define como una "gubernamentalidad financiera", donde el endeudamiento deja de ser una carga estigmatizada para convertirse en una tecnología de integración social y una "extension permanente" del salario. Al transformar la deuda en un componente cotidiano y normalizado de la economía doméstica, el retail logró desplazar y postergar los conflictos distributivos desde la esfera del consumo, permitiendo que sectores de ingresos bajos mantengan estándares de vida que sus remuneraciones reales no podrían sustentar. Así, la retailización no solo gestiona flujos monetarios, sino que produce "sujetos financieros" cuya identidad y ciudadanía se validan a través de su capacidad para participar en este engranaje de crédito y pago permanente.
+
+La deuda, en este escenario, ha sido "domesticada" por los hogares. Ha dejado de ser un estigma o una señal de fracaso para convertirse en una de agencia y una vía de inclusión social. Como sugieren las investigaciones sobre el Chile actual, el crédito se ha resignificado como un mecanismo necesario para gestionar la cotidianeidad, permitiendo que la "normalización de la deuda" sea el motor que mantiene viva la promesa de la utopía consumista. Así, la identidad del chileno contemporáneo se forja en una tensa pero indisoluble relación entre el deseo de pertenencia, la presión del modelo heredado y la gestión estratégica de su capacidad de endeudamiento.
+
+## Consumo Responsable, Critico, Sustentable.
+
+La mirada tradicional del consumo, como la describe Moulian (1997), implica comprenderlo como un espacio de despolitizacion y privatizacion que incluso puede llegar a amenazar las formas de participacion propiamente politicas. (Ciudadania/Publico, Consumidor/privado). Tal y como indican Artiza et.al. (2009), Esta vision tradicional ha sido desmentida por diversas investigaciones a partir de los años 2000 en donde el consumo aparece como un ambito central en la construccion de la ciudadania. (Soper y Trentman, 2007).
+
+Actualmente, la discusion converge en entender al consumo como un elemento con incidencia en la construccion de la ciudadania (Harrison, et al., 2005; Clarke, et al., 2007; Soper, 2007; Soper y Trentmann, 2007; Freestone y McGoldrick, 2008, Artiza et.al.). En ese sentido, los individuos contemporaneos pueden encontrar en el consumo una forma de participacion y deliberacion politica.
+
+La deficinición operativa de consumo responsable que ofrece Ariztia et.al(2009) es aquel consumo orientado a "adaptar el estilo de vida y habitos de consumo con la intencion de reducir el impacto negativo". Una idea que va bastante en linea con la idea de Marambio-Tapia (2024) cuando refiere al "Consumo critico". quien sostiene que las personas pueden y deben practicar su ciudadanía a través del consumo, transformándolo en un acto reflexivo. El **consumo crítico** surge como una respuesta que busca "desnaturalizar" aquel que sería el modo normal de consumir, cuestionando imperativos como el endeudamiento sistémico o la obsolescencia de los bienes. Este enfoque incorpora un componente ético / reflexivo que incita al individuo a tomar decisiones conscientes, como el boicot a marcas con prácticas laborales con la que no estan de acuerdo.
+
+(Agregar sobre consumo sustentable.)
+
+## Metodo.
+
+Se utilizara un analisis de cluster a partir del algoritmo K-medias con el fin de agrupar a los sujetos a partir de sus caracteristicas en relacion al consumo.
+
+Para ello, ademas de utilizar las variables de la encuesta, se realizo un analisis factorial a partir de las baterias O1, O2, O3 y O4 con el fin de reducir la dimenisonalidad e identificar las variables latentes que explican las respuestas a estas baterias.
+
+# Analisis descriptivo.
+
+
+```{r}
+ESOCC %>%
+  select(Consumo_Critico,
+         Eficiencia_Hogar,
+         Planificacion,
+         Facilidad_reciclaje,
+         Percep_responsabilidad) %>%
+  descr(stats = "common", transpose = TRUE) %>%
+  as.data.frame() %>%
+  kable(caption = "Estadísticas Descriptivas",
+        digits = 2)
+```
+Al analizar la dispersión de la muestra para identificar a los sujetos en posiciones extremas, observamos una distribución que se ajusta notablemente a la normalidad. Tomando como referencia la desviación estándar de 0.70, podemos identificar a los grupos de mayor y menor intensidad. En los niveles superiores, si consideramos como puntajes "muy altos" a aquellos que se sitúan a dos desviaciones estándar por encima de la media (aproximadamente a partir de 1.40), encontramos a un grupo selecto de 37 sujetos. Estos individuos representan la vanguardia del consumo crítico, alcanzando un valor máximo de 2.29, lo que sugiere un compromiso ético y político en sus compras que es excepcionalmente alto respecto al resto de la población estudiada.
+
+En el extremo opuesto, la proporción de sujetos con niveles "muy bajos" es equivalente debido a la simetría de la curva. Aproximadamente otros 37 sujetos presentan puntajes inferiores a -1.40, llegando a un mínimo de -1.98. Este grupo se caracteriza por una desconexión casi total de las prácticas de consumo crítico, priorizando otros criterios de compra ajenos a la responsabilidad social o ambiental. El resto de la muestra, que constituye la gran mayoría de los participantes, se distribuye en los niveles intermedios, lo que confirma que el consumo crítico no es una práctica polarizada, sino un fenómeno gradual donde la mayor parte de la población manifiesta comportamientos moderados y cercanos al equilibrio estadístico.
+
+La variable Eficiencia en el Hogar, calculada para una muestra de 1,623 sujetos, presenta una media de -0.01. Al igual que en el factor anterior, este valor cercano a cero es un subproducto del método de regresión utilizado para la extracción de factores, el cual centra la medida para que el "sujeto promedio" de la muestra sirva como punto de referencia central. No obstante, en este caso observamos una desviación estándar ligeramente menor (0.56), lo que indica que las prácticas de eficiencia doméstica (como el ahorro de energía o agua) están más concentradas o son más homogéneas entre los encuestados que las prácticas de consumo crítico.
+
+Al evaluar la forma de la distribución, se observa una asimetría negativa de -0.23. Aunque es un valor bajo, sugiere que existe una leve tendencia de la muestra hacia puntajes más altos, dejando una "cola" de sujetos con niveles de eficiencia particularmente bajos. Sin embargo, con una curtosis de -0.03, la distribución sigue siendo prácticamente normal, lo que nos permite segmentar a la población con precisión.
+
+el factor Planificación en la muestra de 1,623 sujetos arroja una media de -0.01. Este valor, prácticamente nulo, es el resultado esperado tras la aplicación del método de regresión para el cálculo de puntajes factoriales, el cual estandariza la medida para que el centro de la distribución coincida con el promedio de las respuestas del grupo. Con una desviación estándar de 0.55, observamos que esta es la variable con menor dispersión de las analizadas hasta ahora, lo que sugiere que los hábitos de planificación (como la elaboración de presupuestos o listas de compras) son bastante homogéneos y presentan menos "saltos" bruscos entre un individuo y otro.
+
+La forma de la distribución es notablemente equilibrada, con una asimetría de -0.12 y una curtosis de 0.05. Estos valores indican que la variable se comporta de forma casi idéntica a una distribución normal teórica, sin presentar un apuntamiento excesivo ni sesgos que desplacen la masa de datos hacia los extremos. Si observamos los cuartiles, el 50% central de la población se encuentra en un rango muy estrecho, entre -0.37 (Q1) y 0.37 (Q3), lo que refuerza la idea de que la gran mayoría de los sujetos comparten niveles de planificación muy similares entre sí.
+
+```{r}
+descr(ESOCC$Facilidad_reciclaje)
+```
+El factor Facilidad de Reciclaje presenta un comportamiento estadístico distintivo respecto a las variables anteriores, caracterizándose por ser la medida con menor variabilidad y mayor concentración de toda la muestra. Aquí tienes el análisis descriptivo narrativo:
+Análisis de la Distribución y Percepción de Facilidad de Reciclaje
+
+La variable presenta una media de 0.01, situándose prácticamente en el centro del espectro gracias al ajuste del método de regresión. Lo más destacable de este factor es su desviación estándar de 0.38, la más baja registrada hasta ahora. Esto indica que existe un consenso muy alto entre los 1,623 sujetos: la percepción sobre qué tan fácil o difícil es reciclar no varía drásticamente de una persona a otra; la mayoría de los encuestados comparte una experiencia muy similar.
+
+A diferencia de los factores anteriores, esta variable muestra una asimetría positiva (0.24). Esto significa que la distribución se inclina ligeramente hacia los valores bajos, sugiriendo que hay un grupo un poco más numeroso de personas que encuentran mayores barreras o dificultades para reciclar, dejando una "cola" hacia los puntajes de mayor facilidad.
+
+Aquí tienes el reporte para el factor Percepción de Responsabilidad, manteniendo la estructura narrativa, técnica y fluida de los análisis previos.
+Análisis de la Distribución y Percepción de Responsabilidad
+
+El factor Percepción de Responsabilidad presenta una media de 0.00, lo cual es el resultado esperado al utilizar el método de regresión para la estimación de puntajes. Esta cifra no debe interpretarse como una falta de compromiso, sino como el eje neutro que representa el comportamiento promedio de los 1,623 sujetos. A partir de este centro, los puntajes positivos indican una asunción de responsabilidad superior a la norma del grupo, mientras que los negativos reflejan una percepción de responsabilidad personal más atenuada frente al consumo.
+
+Con una desviación estándar de 0.46, esta variable muestra una dispersión moderada-baja, lo que sugiere que las opiniones sobre quién debe hacerse cargo de las consecuencias del consumo están bastante cohesionadas en la muestra. La forma de la distribución es excepcionalmente equilibrada, con una asimetría de 0.09 y una curtosis de 0.01. Estos valores confirman que los datos siguen una distribución normal casi perfecta, donde la masa de la población se concentra de forma simétrica alrededor del promedio, sin sesgos significativos hacia los extremos.
+
+Aquí llama la atención el que entre Darme un gusto a mi mismo, y Darle un gusto a mi familia, suman mas que todas las demas categorias. Es una observacion que va en linea con lo mencionado por la bibliografia.
+
+La predominancia de las opciones "Darme un gusto a mí mismo" y "Darle un gusto a mi familia" (C2) por sobre categorías de índole pública o social, refuerza la tesis de la "domesticación" del modelo. El consumo en Chile se ha volcado hacia el espacio íntimo; es una herramienta de cohesión familiar y de gratificación personal inmediata frente a un entorno público percibido como hostil o insuficiente. Aquí, el crédito no se usa para "presumir" en un sentido tradicional, sino para gestionar el afecto y el bienestar del núcleo primario, validando la idea de que la familia es la última trinchera de la seguridad social.
+
+```{r}
+table(ESOCC$M15)
+```
+El grupo predominante es el de aquellos que están más endeudados que hace tres años, alcanzando a 545 sujetos (33.6%), lo que indica que la tendencia principal es el deterioro del balance económico personal. Le siguen muy de cerca 488 personas (30.1%) que se mantienen fuera del sistema crediticio al no tener deudas ahora ni antes, marcando una brecha clara entre la población bancarizada y la autónoma. Por otro lado, un segmento menor de 349 sujetos (21.5%) ha logrado reducir su carga financiera, mientras que solo 241 individuos (14.8%) mantienen su nivel de deuda sin cambios. En términos netos, el porcentaje de personas cuya deuda creció supera significativamente al de quienes la disminuyeron, evidenciando un saldo negativo en la salud financiera del grupo general.
+
+```{r}
+freq(ESOCC$situacion_financiera.x)
+```
+
+La poblacion en deficit, es particularmente alta en la encuesta. Un 32% de los individuos senala mas gastos en el hogar que los ingresos.
+
+```{r}
+descr(ESOCC$M18_1)
+descr(ESOCC$M18_2)
+descr(ESOCC$M18_3)
+descr(ESOCC$M18_4)
+descr(ESOCC$M18_5)
+descr(ESOCC$M18_6)
+descr(ESOCC$M18_7)
+descr(ESOCC$M18_8)
+descr(ESOCC$M14)
+```
+Los dos principales gastos que reportan los individuos, son la alimentacion y el pago de deudas. Con una media respectiva de 190.945 y 228.149 pesos.
+
+```{r}
+ESOCC_deficit <- ESOCC %>%
+  filter(situacion_financiera.x == "Déficit (Gasta más)")
+```

@@ -1,0 +1,216 @@
+---
+title: "Borrador 2"
+format: html
+editor: visual
+---
+
+```{r}
+library(psych)
+library(summarytools)
+library(dplyr)
+library(haven)
+```
+
+### La Identidad Financiada: El Crédito como Infraestructura del "Yo" en Chile
+
+En las últimas décadas, el endeudamiento en Chile ha dejado de ser una anomalía financiera para transformarse en una característica estructural de la vida cotidiana. Lejos de ser un fenómeno emergente, el uso masivo del crédito tiene su origen en las reformas neoliberales que reconfiguraron la relación entre el Estado y los ciudadanos. Este proceso de "financiarización" ha desplazado el acceso al bienestar desde la red de protección social hacia la capacidad de endeudamiento individual (Marambio-Tapia, 2019, 2023).
+
+Sin embargo, la función del crédito en Chile va mucho más allá de la mera adquisición de bienes básicos. Siguiendo la propuesta de Alan Warde (2005, 2017), el consumo debe entenderse como un proceso de apropiación dentro de **prácticas sociales específicas** (como la crianza, el ocio o la vida profesional). En este sentido, la identidad no es una elección soberana y libre, sino que se construye a través de la participación exitosa en dichas prácticas. En el contexto chileno, el crédito se erige como la **infraestructura material indispensable** que permite a los individuos participar en las prácticas que validan su existencia social.
+
+De este modo, la identidad en Chile se constituye como una **"identidad en cuotas"**. La deuda no financia simplemente un objeto, sino el sentido de pertenencia y el reconocimiento ante los demás. Como plantea Warde (2017), el consumo es a menudo rutinario y está dictado por convenciones sociales; en Chile, esas convenciones exigen un estándar de vida que los salarios, por sí solos, no pueden cubrir. Por lo tanto, el crédito no es un impulso hedonista, sino el mecanismo que evita la **exclusión identitaria**. El sujeto chileno "es" en la medida en que puede sostener el flujo de crédito necesario para no quedar fuera de los ritmos de consumo que la sociedad demanda.
+
+Esta dinámica refuerza y rearticula las jerarquías sociales. Si bien el acceso masivo al crédito parece democratizar el consumo, en realidad crea una nueva distinción: una identidad sostenida sobre una **precariedad financiada**. Mientras los sectores dominantes utilizan el consumo para marcar distinción cultural, los sectores populares y medios utilizan la deuda para acceder a una identidad "aspiracional" que les otorgue visibilidad. Aquí, la deuda funciona como un cordón umbilical con la modernidad: sin crédito, la identidad social del individuo se desvanece.
+
+En conclusión, el sobreendeudamiento no debe leerse como un síntoma de ignorancia, sino como el costo inevitable de la **integración identitaria**. En un modelo donde el reconocimiento social ha sido mercantilizado, el crédito se convierte en la única vía posible para habitar la sociedad contemporánea. La identidad del individuo no es el resultado de un cálculo financiero, sino de una estructura social que ha convertido a la deuda en el soporte vital del "yo".
+
+```{r}
+freq(Encuesta_Sociedad_de_Consumo_2023$C1)
+```
+
+Frente a la pregunta **C1.** En general, ¿qué cree que tiene usted en común con las demás personas? Se observa que la categoría "Gustos e intereses personales" (C1) posee un peso estadístico casi idéntico al de "Ser chileno". Podria considerarse evidencia de que gran parte de los ciudadanos se reconocen entre si por sus estilos de vida y practicas de consumo. Es un resultado que iría en linea con la idea de que el mercado es el principal integrador social.
+
+```{r}
+freq(Encuesta_Sociedad_de_Consumo_2023$C2)
+```
+
+Con respecto a la pregunta "Si tengo un poco de diner disponible despues de solventar mis gastos basicos, generalmente yo..." hay predominancia de las opciones "Darme un gusto a mí mismo" y "Darle un gusto a mi familia" (C2) por sobre categorías de índole pública o social.
+
+```{r}
+Encuesta_Recodificada <- Encuesta_Recodificada %>% rowwise() %>% mutate (gastos = sum(c_across(c(M14, M18_1:M18_8)), na.rm = TRUE)) %>% ungroup()
+
+descr(Encuesta_Recodificada$gastos)
+freq(Encuesta_Recodificada$E2)
+
+Encuesta_Recodificada <- Encuesta_Recodificada %>%
+  mutate(
+    # 1. Convertimos el ingreso ordinal a un valor numérico (punto medio)
+    ingreso_num = case_when(
+      E2 == 1 ~ 250000,   # Entre 0 y 500k
+      E2 == 2 ~ 650000,   # Entre 500k y 800k
+      E2 == 3 ~ 1000000,  # Entre 800k y 1.2M
+      E2 == 4 ~ 1600000,  # Entre 1.2M y 2M
+      E2 == 5 ~ 2500000,  # Estimación para más de 2M
+      TRUE ~ NA_real_           # Para NAs y "No responde"
+    ),
+    
+    # 2. Creamos la variable de déficit
+    situacion_financiera = case_when(
+      is.na(ingreso_num) | is.na(gastos) ~ "Sin datos",
+      gastos > ingreso_num ~ "Déficit (Gasta más)",
+      gastos <= ingreso_num ~ "No Déficit (Ahorro/Equilibrio)"
+    )
+  )
+
+# 3. Ver el resultado final sin crear objetos
+Encuesta_Recodificada %>%
+  filter(situacion_financiera != "Sin datos") %>%
+  count(situacion_financiera) %>%
+  mutate(porcentaje = n / sum(n) * 100)
+
+
+
+
+
+
+```
+
+```{r procesamiento vairable o5}
+library(tidytext)
+library(stringr)
+library(stringi)
+library(topicmodels)
+
+stopwords_es <- get_stopwords("es") %>%
+  mutate(word = stri_trans_general(word, "Latin-ASCII"))
+
+# 2. Procesamiento de Texto
+O5_Palabras <- Encuesta_Recodificada %>%
+  # Creamos un ID único por fila si no lo tienes, para no perder el origen del texto
+  mutate(id_encuesta = row_number()) %>% 
+  # Limpieza inicial antes de tokenizar
+  mutate(o5_temp = stri_trans_general(O5, "Latin-ASCII"), 
+         o5_temp = str_to_lower(o5_temp),
+         o5_temp = str_replace_all(o5_temp, "[^[:alpha:][:space:]]", "")) %>%
+  # Tokenización
+  unnest_tokens(word, o5_temp) %>%
+  # Limpieza de Stopwords y palabras cortas
+  anti_join(stopwords_es, by = "word") %>%
+  filter(nchar(word) > 2)
+
+# 3. Ver las 15 más frecuentes (Ajustado)
+O5_Palabras %>%
+  count(word, sort = TRUE) %>%
+  slice_max(n, n = 15)
+
+dtm_O5 <- O5_Palabras %>%
+  count(key, word) %>% # Asegúrate de tener una columna ID o fila única
+  cast_dtm(key, word, n)
+
+# Ajustamos el modelo para encontrar 3 temas (puedes cambiar k según necesites)
+lda_model <- LDA(dtm_O5, k = 3, control = list(seed = 1234))
+
+# Extraemos las palabras clave de cada "idea general" o constructo
+temas_palabras <- tidy(lda_model, matrix = "beta")
+
+# Ver las 10 palabras que mejor definen cada constructo
+top_terminos <- temas_palabras %>%
+  group_by(topic) %>%
+  slice_max(beta, n = 10) %>% 
+  ungroup() %>%
+  arrange(topic, -beta)
+
+ggplot(top_terminos, aes(x = reorder_within(term, beta, topic), y = beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip() +
+  scale_x_reordered() +
+  labs(title = "Principales Constructos identificados en O5",
+       subtitle = "Cada panel representa una idea general diferente",
+       x = "Palabras clave", y = "Relevancia (Beta)")
+
+```
+
+```{r}
+library(gemini.R)
+library(httr2)
+library(jsonlite)
+library(dplyr)
+library(stringr)
+
+# 1. Configuración de API
+setAPI("AIzaSyCE4L70h3TDq19DBvpfnvGtZ9pflR91dn0")
+
+# 2. Preparar los datos limpios
+respuestas_completas <- Encuesta_Recodificada %>%
+  filter(!is.na(O5)) %>%
+  pull(O5) %>%
+  stri_trans_general("Latin-ASCII") # Limpieza de caracteres especiales
+
+# 3. Parámetros de Lotes "Anti-Bloqueo"
+tamano_lote <- 50  # Lote pequeño para no saturar
+total_respuestas <- length(respuestas_completas)
+num_lotes <- ceiling(total_respuestas / tamano_lote)
+
+# Lista para guardar los análisis de cada lote
+analisis_acumulado <- list()
+
+cat("Iniciando análisis cualitativo experto por lotes...\n")
+cat("Total de respuestas:", total_respuestas, "divididas en", num_lotes, "lotes.\n\n")
+
+# 4. Bucle de Procesamiento
+for (i in 1:num_lotes) {
+  
+  # Definir el rango del lote
+  inicio <- (i - 1) * tamano_lote + 1
+  fin <- min(i * tamano_lote, total_respuestas)
+  
+  cat("----------------------------------------------------------\n")
+  cat("Procesando Lote", i, "de", num_lotes, "(Respuestas", inicio, "-", fin, ")\n")
+  
+  # Extraer el texto del lote actual
+  texto_lote <- paste(respuestas_completas[inicio:fin], collapse = "\n* ")
+  
+  # Prompt de Nivel Experto
+  pregunta_prompt <- paste(
+    "Instrucción: Actúa como un Investigador Senior experto en Análisis Cualitativo.",
+    "Analiza el siguiente segmento de respuestas sobre 'Sociedad de Consumo'.",
+    "\nRespuestas:\n", texto_lote,
+    "\nTarea: 1. Identifica el constructo o idea matriz dominante en este grupo.",
+    "2. Identifica 3 categorías emergentes (conceptos clave).",
+    "3. Describe el tono emocional (ej: frustración, deseo, rechazo, resignación).",
+    "Responde de forma concisa pero analítica."
+  )
+  
+  # Intento de llamada a la API con control de errores
+  tryCatch({
+    analisis_acumulado[[i]] <- gemini(pregunta_prompt)
+    cat("✅ Lote", i, "analizado correctamente.\n")
+  }, error = function(e) {
+    cat("❌ Error en lote", i, ": ", e$message, "\n")
+    analisis_acumulado[[i]] <- paste("Error en este lote:", e$message)
+  })
+  
+  # PAUSA LARGA DE SEGURIDAD
+  if (i < num_lotes) {
+    cat("Esperando 70 segundos para evitar bloqueo de cuota (429)...\n")
+    Sys.sleep(70)
+  }
+}
+
+# 5. Guardar y ver el resultado consolidado
+cat("\n\n========================================================\n")
+cat("PROCESAMIENTO FINALIZADO\n")
+cat("========================================================\n")
+
+# Unir todos los análisis en un solo objeto para leerlo después
+informe_final <- paste(analisis_acumulado, collapse = "\n\n--- SIGUIENTE SEGMENTO ---\n\n")
+
+# Mostrar los primeros resultados en consola
+cat(substr(informe_final, 1, 2000)) # Muestra los primeros 2000 caracteres
+
+# Opcional: Guardar el análisis en un archivo Word o Texto
+# writeLines(informe_final, "Analisis_Cualitativo_Sociedad_Consumo.txt")
+
+
+writeLines(na.omit(Encuesta_Recodificada$O5), "respuestas_consumo.txt")
+```
