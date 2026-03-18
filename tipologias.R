@@ -1,4 +1,4 @@
-#K-MEANS
+#K-PROTO
 library(dplyr)
 install.packages("factoextra")
 library(factoextra)
@@ -118,3 +118,7 @@ Mayoría sin déficit actual
 👉 Perfil: Grupo en transición financiera
 Podrían haber empeorado su situación en los últimos 3 años, pero no todos están en déficit actual.
 
+
+F
+# Ver el subconjunto de datos
+vanguardia_df <- subset(datos, Consumo_Critico > 1.40)
