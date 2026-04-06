@@ -1,0 +1,166 @@
+---
+title: "Propuesta clustering acm"
+format: html
+theme: slate
+echo: false
+warning: false
+title-block-banner: true
+bibliography: Consumodef.bib
+csl: apa.csl
+lang: es
+---
+```{r}
+library(tidyverse)
+ESOCC <- read_csv("ESOCC.csv", show_col_types = FALSE)
+
+attr(ESOCC$akatu_1, "label") <- "P1 Planificar compras"
+attr(ESOCC$akatu_2, "label") <- "P2 Evaluar impactos"
+attr(ESOCC$akatu_3, "label") <- "P3 Consumir solo lo necesario"
+attr(ESOCC$akatu_4, "label") <- "P4 Reutilizar/Reparar"
+attr(ESOCC$akatu_5, "label") <- "P5 Separar basura/Reciclar"
+attr(ESOCC$akatu_6, "label") <- "P6 Uso consciente del credito"
+attr(ESOCC$akatu_7, "label") <- "P7 Valorar RSE"
+attr(ESOCC$akatu_9, "label") <- "P9 Feedback y mejora"
+attr(ESOCC$akatu_10, "label") <- "P10 Divulgar consumo consciente"
+attr(ESOCC$akatu_11, "label") <- "P12 Reflexion sobre valores"
+attr(ESOCC$AKATU_TOTAL, "label") <- "Indice AKATU total"
+```
+## Análisis de correspondencias múltiples (ACM) para tipologías de consumo.
+
+El presente documento se centra en la formulaicon de un analisis de cluster que tiene como insumo un analisis de correspondencias multiples (ACM). Para identificar las dimensiones del consumo de interes, realizo una variación de la propuesta de medición del instituto AKATU en @preudhomme_headtohead_2021, que contempla cuatro dimensiones y trece comportamientos.
+```{r}
+library(tibble)
+library(knitr)
+
+tabla_dimensiones <- tibble::tribble(
+  ~`Dimensión`, ~`Enfoque / Descripción`, ~`Indicadores y Comportamientos Específicos`,
+  "Compra Consciente / Material",
+  "Privilegia productos con atributos sociales o ambientales y el apoyo a economías locales.",
+  "• Adquirir productos con etiqueta de \"comercio justo\".<br>• Preferir empresas con responsabilidad social (RSE).<br>• Optar por productores y distribuidores locales (almacenes, ferias).<br>• Prácticas de boycott (dejar de comprar) o buycott (comprar ex profeso por ética).",
+
+  "Estilo de Vida Ahorrativo / Eficiencia",
+  "Prácticas domésticas orientadas al ahorro de recursos que benefician tanto al entorno como a la economía del hogar.",
+  "• Apagar luces en ambientes desocupados.<br>• Cerrar la llave del agua al lavarse los dientes.<br>• Desenchufar aparatos eléctricos en desuso.<br>• Esperar que los alimentos se enfríen antes de refrigerar.",
+
+  "Compra Reflexiva / Reflexión",
+  "Posición activa del consumidor para informarse sobre la trazabilidad y efectos de su compra.",
+  "• Planificar la compra de alimentos y vestuario para evitar la impulsividad.<br>• Leer etiquetas antes de decidir la compra.<br>• Informarse sobre el origen de los productos y sus impactos socioambientales.<br>• Reflexionar sobre si el consumo es una necesidad real.",
+
+  "Estilo de Vida Sustentable / Gestión de Residuos",
+  "Acciones vinculadas al mantenimiento de un estilo de vida que minimiza los desechos y la degradación.",
+  "• Separar la basura para reciclaje.<br>• Reutilizar productos, envases y papel de impresión.<br>• Reparar ropa o electrodomésticos en lugar de reemplazarlos.<br>• Comprar productos hechos con material reciclado u orgánicos.",
+
+  "Agencia Ciudadana / Colectiva",
+  "Uso del consumo como herramienta de presión política y movilización social.",
+  "• Divulgar información y valores del consumo consciente a otros.<br>• Cobrar a los políticos propuestas que viabilicen estas prácticas.<br>• Realizar reclamos o denuncias (ej. Sernac) cuando el producto no satisface o es poco ético.<br>• Participar en asociaciones de consumidores o cooperativas."
+)
+
+knitr::kable(tabla_dimensiones, format = "html", escape = FALSE)
+```
+
+Para la adaptacion de la propuesta de AKATU, se consideraron las siguientes variables de la "encuesta sociedad de consumo".
+
+```{r}
+vars_akatu <- c("akatu_1", "akatu_2", "akatu_3", "akatu_4", "akatu_5", "akatu_6", "akatu_7", "akatu_9", "akatu_10", "akatu_11", "AKATU_TOTAL")
+
+desc_raw <- psych::describe(ESOCC %>% select(all_of(vars_akatu)))
+
+descriptivos <- tibble::tibble(
+  variable = rownames(desc_raw),
+  label = purrr::map_chr(variable, ~ {
+    lab <- attr(ESOCC[[.x]], "label")
+    if (is.null(lab) || is.na(lab) || lab == "") .x else lab
+  }),
+  n = desc_raw$n,
+  media = round(desc_raw$mean, 2),
+  sd = round(desc_raw$sd, 2),
+  minimo = round(desc_raw$min, 2),
+  maximo = round(desc_raw$max, 2)
+)
+
+knitr::kable(descriptivos, format = "html", escape = FALSE)
+```
+
+El procedimiento para categorizar el consumo consistio en realizar un clustering por K-medias sobre los indices construidos para cada una de las dimensiones propuestas por AKATU presentes en la encuesta. Para esto, se determino el numero optimo de clusters mediante el metodo del codo, y se opto por la solucion de tres clusters.
+
+Posteriormente, se realizo un analisis de correspondencias multiples (ACM) para clusterizar los perfiles resultantes en conjunto con otras variables.
+
+```{r}
+#| fig-cap: "Metodo del codo para determinar numero optimo de clusters"
+library(factoextra)
+data_for_clust <- ESOCC %>% select(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akatu_6, akatu_7, akatu_9, akatu_10, akatu_11)
+fviz_nbclust(data_for_clust, kmeans, method = "wss")
+```
+
+```{r}
+akatu_vars <- ESOCC %>% select(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akatu_6, akatu_7, akatu_9, akatu_10, akatu_11)
+akatu_scaled <- scale(akatu_vars)
+set.seed(123)
+kmeans_result <- kmeans(akatu_scaled, centers = 3)
+```
+
+```{r}
+#| fig-cap: "Visualizacion de clusters K-medias"
+fviz_cluster(
+  kmeans_result,
+  data = akatu_scaled,
+  geom = "point",
+  ellipse.type = "norm",
+  ggtheme = theme_minimal()
+)
+```
+Los cluster resultantes fueron clasificados como "Indiferentes", "Conscientes", y "Iniciantes", en base a las medias de cada variable por cluster.
+
+```{r}
+data_for_clust <- ESOCC %>% select(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akatu_6, akatu_7, akatu_9, akatu_10, akatu_11)
+
+akatu_vars <- data_for_clust
+akatu_scaled <- scale(akatu_vars)
+set.seed(123)
+kmeans_result <- kmeans(akatu_scaled, centers = 3)
+
+ESOCC$cluster_akatu <- factor(
+  kmeans_result$cluster,
+  levels = c(1, 2, 3),
+  labels = c("indiferente", "consciente activo", "iniciante pragmatico")
+)
+
+medias_cluster <- ESOCC %>%
+  group_by(cluster_akatu) %>%
+  summarise(
+    across(c(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akatu_6, akatu_7, akatu_9, akatu_10, akatu_11), mean, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+
+total_ss <- sum(scale(akatu_vars, scale = FALSE)^2)
+within_ss <- kmeans_result$tot.withinss
+explained_var <- 1 - (within_ss / total_ss)
+print(paste("Varianza explicada:", explained_var))
+
+# Tabla de resultados K-medias lista para Quarto
+tabla_kmeans <- medias_cluster %>%
+  left_join(
+    ESOCC %>%
+      count(cluster_akatu, name = "n") %>%
+      mutate(porcentaje = round(100 * n / sum(n), 2)),
+    by = "cluster_akatu"
+  ) %>%
+  mutate(
+    across(starts_with("akatu_"), ~ round(.x, 2)),
+    varianza_explicada = round(explained_var, 3)
+  ) %>%
+  relocate(n, porcentaje, .after = cluster_akatu)
+
+knitr::kable(
+  tabla_kmeans,
+  caption = "Resultados del K-medias (centros por cluster, tamano y porcentaje)",
+  align = "lrrrrrrrrrrrrr"
+)
+```
+Posteriormente, se realizo un analisis de correspondencias multiples (ACM).
+En el análisis de correspondencias múltiples se incluyeron variables que combinan perfil de consumo, condiciones socioeconómicas y disposiciones actitudinales. Específicamente, se consideró la pertenencia a la tipología de consumo (clusters AKATU), la situación financiera del hogar, el nivel socioeconómico, el sexo y la edad, junto con indicadores de posicionamiento politico individual. Además, se incorporaron variables actitudinales y de percepción del módulo M, incluyendo tres ítems específicos orientados a prácticas y orientaciones de consumo. Esta selección permitió capturar simultáneamente diferencias estructurales (posición social y demográfica) y diferencias culturales/valóricas asociadas a los estilos de consumo. 
+
+## Reporte a partir de los resultados del ACM
+
+El análisis de correspondencias múltiples revela que el consumo consciente en Chile está profundamente fracturado por el capital socioeconómico y la estabilidad financiera, configurándose como un atributo de clase donde la Dimensión 1 separa nítidamente a los individuos según su estatus y nivel educacional. Los resultados demuestran que el perfil del "Consciente Activo" se asocia estadísticamente a sectores con mayor capital cultural y situaciones de equilibrio o ahorro económico (v.test: 5.28 y 8.92 respectivamente), mientras que el "Consumidor Indiferente" se proyecta con fuerza en el polo opuesto, vinculado a niveles socioeconómicos bajos y situaciones de déficit financiero (v.test: -7.42 y -5.97). Por otro lado, la Dimensión 2 subraya la importancia de la solvencia al establecer un contraste drástico entre quienes carecen de compromisos financieros (v.test: 17.04) y aquellos cuya vida cotidiana está marcada por el endeudamiento creciente y la incapacidad de ahorro, lo que sugiere que la indiferencia ante los impactos del consumo no es necesariamente una elección ética, sino una restricción impuesta por la urgencia material y la precariedad de ingresos. Finalmente, el modelo confirma que mientras el segmento "Iniciante Pragmático" representa una transición transversal influenciada por factores generacionales (v.test: 4.39 en Dim 3), el acceso a una agencia ciudadana plena en el mercado requiere de una base de seguridad económica que permita al sujeto ir más allá de la mera supervivencia y la "domesticación" táctica del crédito

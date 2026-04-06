@@ -2,7 +2,8 @@
 title: "Consumo responsable en Chile."
 format: html
 editor: visual
-bibliography: references.bib
+bibliography: Consumo.bib
+csl: apa.csl
 ---
 
 ```{r}
