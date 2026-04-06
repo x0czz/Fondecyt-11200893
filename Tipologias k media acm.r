@@ -2,6 +2,7 @@
 library(tidyverse)
 library(psych)
 library(haven)
+options(scipen = 999)
 
 encuesta_raw <- read_sav("Encuesta Sociedad de Consumo 2023.sav")
 esocc_creadas <- read_csv("ESOCC.csv", show_col_types = FALSE)
@@ -53,6 +54,34 @@ attr(ESOCC$akatu_10, "label") <- "P10 Divulgar consumo consciente"
 attr(ESOCC$akatu_11, "label") <- "P12 Reflexion sobre valores"
 attr(ESOCC$AKATU_TOTAL, "label") <- "Indice AKATU total"
 
+# Crear variables dicotomicas segun punto medio observado
+vars_akatu_dicot <- c(
+  "akatu_1", "akatu_2", "akatu_3", "akatu_4", "akatu_5",
+  "akatu_6", "akatu_7", "akatu_9", "akatu_10", "akatu_11", "AKATU_TOTAL"
+)
+
+puntos_medios <- ESOCC %>%
+  summarise(
+    across(
+      all_of(vars_akatu_dicot),
+      ~ (min(.x, na.rm = TRUE) + max(.x, na.rm = TRUE)) / 2
+    )
+  ) %>%
+  as.list()
+
+ESOCC <- ESOCC %>%
+  mutate(
+    across(
+      all_of(vars_akatu_dicot),
+      ~ case_when(
+        is.na(.x) ~ NA_integer_,
+        .x >= puntos_medios[[cur_column()]] ~ 1L,
+        TRUE ~ 0L
+      ),
+      .names = "{.col}_d"
+    )
+  )
+
 # Guardar la base de datos actualizada de vuelta al CSV
 write_csv(ESOCC, "ESOCC.csv")
 
@@ -71,11 +100,23 @@ akatu_vars <- ESOCC %>% select(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akat
 akatu_scaled <- scale(akatu_vars)
 kmeans_result <- kmeans(akatu_scaled, centers = 3)  # Asumiendo 4 clusters como en tipologias.R
 
-# Agregar el cluster a ESOCC y convertirlo en factor categórico
+# Reetiquetar clusters por nivel de compromiso AKATU para evitar permutaciones
+ESOCC$cluster_raw <- kmeans_result$cluster
+
+perfil_cluster <- ESOCC %>%
+  mutate(akatu_promedio = rowMeans(select(., starts_with("akatu_")), na.rm = TRUE)) %>%
+  group_by(cluster_raw) %>%
+  summarise(score_medio = mean(akatu_promedio, na.rm = TRUE), .groups = "drop") %>%
+  arrange(score_medio)
+
+mapa_nombres <- setNames(
+  c("indiferente", "iniciante pragmatico", "consciente activo"),
+  perfil_cluster$cluster_raw
+)
+
 ESOCC$cluster_akatu <- factor(
-  kmeans_result$cluster,
-  levels = c(1, 2, 3),  
-  labels = c("indiferente", "consciente activo", "iniciante pragmatico")
+  mapa_nombres[as.character(ESOCC$cluster_raw)],
+  levels = c("indiferente", "iniciante pragmatico", "consciente activo")
 )
 
 # Imprimir tamaños de clusters
@@ -132,6 +173,58 @@ acm_subset <- ESOCC |>
     cluster_akatu, situacion_financiera.x, M15, NSE, SEXO, EDADR, B1, C2, M4, M9, `M13#1`, `M13#3`, `M13#7`
   )
 
+# Chi-cuadrado para todas las combinaciones de variables (todas con todas)
+vars_chi <- c(
+  "situacion_financiera.x", "M15", "NSE", "SEXO", "EDADR", "B1", "C2", "M4", "M9", "M13#1", "M13#3", "M13#7"
+)
+
+chi_results <- data.frame(
+  var1 = character(),
+  var2 = character(),
+  estadistico = numeric(),
+  gl = integer(),
+  p_valor = numeric(),
+  stringsAsFactors = FALSE
+)
+
+for (i in 1:(length(vars_chi) - 1)) {
+  for (j in (i + 1):length(vars_chi)) {
+    v1 <- vars_chi[i]
+    v2 <- vars_chi[j]
+
+    datos_test <- ESOCC %>%
+      select(all_of(c(v1, v2))) %>%
+      mutate(across(everything(), ~ as.factor(.x)))
+
+    tabla <- table(datos_test[[v1]], datos_test[[v2]], useNA = "no")
+
+    if (all(dim(tabla) > 1)) {
+      test <- suppressWarnings(chisq.test(tabla))
+
+      chi_results <- rbind(
+        chi_results,
+        data.frame(
+          var1 = v1,
+          var2 = v2,
+          estadistico = as.numeric(test$statistic),
+          gl = as.integer(test$parameter),
+          p_valor = as.numeric(test$p.value),
+          stringsAsFactors = FALSE
+        )
+      )
+    }
+  }
+}
+
+chi_results <- chi_results %>%
+  mutate(
+    estadistico = round(estadistico, 2),
+    p_valor = round(p_valor, 2),
+    p_ajustado_bh = round(p_ajustado_bh, 2)
+  )
+
+print(chi_results)
+
 # Convertir a factor usando labels de haven cuando existan
 acm_subset <- acm_subset |>
   mutate(
@@ -169,5 +262,6 @@ fviz_mca_var(
 
 # Si prefieres ver individuos y categorias juntos, usa este biplot:
 # fviz_mca_biplot(mca_result, repel = TRUE, ggtheme = theme_minimal())
+
 
 

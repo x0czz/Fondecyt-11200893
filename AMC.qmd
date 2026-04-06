@@ -119,10 +119,23 @@ akatu_scaled <- scale(akatu_vars)
 set.seed(123)
 kmeans_result <- kmeans(akatu_scaled, centers = 3)
 
+# Reetiquetar clusters por nivel de compromiso AKATU para evitar permutaciones de kmeans
+ESOCC$cluster_raw <- kmeans_result$cluster
+
+perfil_cluster <- ESOCC %>%
+  mutate(akatu_promedio = rowMeans(select(., starts_with("akatu_")), na.rm = TRUE)) %>%
+  group_by(cluster_raw) %>%
+  summarise(score_medio = mean(akatu_promedio, na.rm = TRUE), .groups = "drop") %>%
+  arrange(score_medio)
+
+mapa_nombres <- setNames(
+  c("indiferente", "iniciante pragmatico", "consciente activo"),
+  perfil_cluster$cluster_raw
+)
+
 ESOCC$cluster_akatu <- factor(
-  kmeans_result$cluster,
-  levels = c(1, 2, 3),
-  labels = c("indiferente", "consciente activo", "iniciante pragmatico")
+  mapa_nombres[as.character(ESOCC$cluster_raw)],
+  levels = c("indiferente", "iniciante pragmatico", "consciente activo")
 )
 
 medias_cluster <- ESOCC %>%
@@ -163,4 +176,6 @@ En el análisis de correspondencias múltiples se incluyeron variables que combi
 
 ## Reporte a partir de los resultados del ACM
 
-El análisis de correspondencias múltiples revela que el consumo consciente en Chile está profundamente fracturado por el capital socioeconómico y la estabilidad financiera, configurándose como un atributo de clase donde la Dimensión 1 separa nítidamente a los individuos según su estatus y nivel educacional. Los resultados demuestran que el perfil del "Consciente Activo" se asocia estadísticamente a sectores con mayor capital cultural y situaciones de equilibrio o ahorro económico (v.test: 5.28 y 8.92 respectivamente), mientras que el "Consumidor Indiferente" se proyecta con fuerza en el polo opuesto, vinculado a niveles socioeconómicos bajos y situaciones de déficit financiero (v.test: -7.42 y -5.97). Por otro lado, la Dimensión 2 subraya la importancia de la solvencia al establecer un contraste drástico entre quienes carecen de compromisos financieros (v.test: 17.04) y aquellos cuya vida cotidiana está marcada por el endeudamiento creciente y la incapacidad de ahorro, lo que sugiere que la indiferencia ante los impactos del consumo no es necesariamente una elección ética, sino una restricción impuesta por la urgencia material y la precariedad de ingresos. Finalmente, el modelo confirma que mientras el segmento "Iniciante Pragmático" representa una transición transversal influenciada por factores generacionales (v.test: 4.39 en Dim 3), el acceso a una agencia ciudadana plena en el mercado requiere de una base de seguridad económica que permita al sujeto ir más allá de la mera supervivencia y la "domesticación" táctica del crédito
+El Análisis de Correspondencias Múltiples (ACM) realizado sobre los datos de la encuesta revela una estructura relacional donde la ética del consumo se encuentra supeditada a la posición socioeconómica y la estabilidad financiera del individuo, capturando una varianza acumulada del 12.63% en sus primeras tres dimensiones. La Dimensión 1 se configura como un eje de capital cultural y económico, definido primordialmente por el NSE (0.488) y el Nivel Educativo (0.365), donde se observa una clara segregación: mientras que el perfil de "Consciente Activo" y los individuos en situación de "No Déficit" (ahorro o equilibrio) se proyectan positivamente con valores de v-test significativos de 5.28 y 8.92 respectivamente, el consumidor "Indiferente" y aquel en situación de "Déficit" se ubican en el polo opuesto (v-test de -7.42 y -5.97). Este hallazgo sugiere que la conciencia en el consumo no es solo una elección actitudinal, sino que está condicionada por la posesión de recursos que permitan trascender la urgencia material del gasto inmediato.
+Por su parte, la Dimensión 2 profundiza en la brecha de estabilidad financiera y gestión de la deuda, encontrándose fuertemente anclada por la variable de uso del dinero disponible (C2: 0.304) y la percepción de endeudamiento (M15: 0.192). En este plano, destaca el contraste estadístico extremo de quienes declaran "No tener deudas ahora ni hace 3 años", quienes presentan el v-test más alto del modelo (17.04), posicionándose como el polo opuesto de quienes viven en situación de "Déficit" (v-test: -14.09). Esta polarización confirma que la solvencia actúa como un habilitador de la conciencia ciudadana, mientras que el endeudamiento creciente empuja a los sujetos hacia la indiferencia o al consumo no consciente, priorizando el impacto individual de corto plazo sobre la responsabilidad social de largo plazo.
+Finalmente, la Dimensión 3 introduce un componente generacional, siendo la Edad (0.439) la variable con mayor poder explicativo en este eje. Aquí se valida que los consumidores de mayor edad poseen niveles de conciencia más robustos (v-test: 4.39 para iniciantes pragmáticos), mientras que el perfil "Indiferente" muestra un rechazo estadístico significativo en este eje (v-test: -7.86), asociándose a grupos más jóvenes y con mayores dificultades de ahorro. En conjunto, el modelo permite concluir que el consumo consciente es un atributo de clase, donde el acceso a la categoría de "Consciente Activo" está restringido a sectores con alto capital educativo y baja presión de deuda, mientras que la "Indiferencia" predomina en sujetos con restricciones presupuestarias y menor instrucción
