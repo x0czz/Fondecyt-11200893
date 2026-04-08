@@ -27,7 +27,7 @@ attr(ESOCC$AKATU_TOTAL, "label") <- "Indice AKATU total"
 ```
 ## Análisis de correspondencias múltiples (ACM) para tipologías de consumo.
 
-El presente documento se centra en la formulaicon de un analisis de cluster que tiene como insumo un analisis de correspondencias multiples (ACM). Para identificar las dimensiones del consumo de interes, realizo una variación de la propuesta de medición del instituto AKATU en @preudhomme_headtohead_2021, que contempla cuatro dimensiones y trece comportamientos.
+El presente documento se centra en la formulaicon de un analisis de cluster que tiene como insumo un analisis de correspondencias multiples (ACM). Para identificar las dimensiones del consumo de interes, realizo una variación de la propuesta de medición del instituto AKATU utilizada en @santos_atitudes_2022, que contempla cuatro dimensiones y trece comportamientos.
 ```{r}
 library(tibble)
 library(knitr)

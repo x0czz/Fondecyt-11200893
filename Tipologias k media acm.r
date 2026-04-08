@@ -5,17 +5,17 @@ library(haven)
 options(scipen = 999)
 
 encuesta_raw <- read_sav("Encuesta Sociedad de Consumo 2023.sav")
-esocc_creadas <- read_csv("ESOCC.csv", show_col_types = FALSE)
+ESOCC <- read_csv("ESOCC.csv", show_col_types = FALSE)
 
-if (!"key" %in% names(encuesta_raw) || !"key" %in% names(esocc_creadas)) {
+if (!"key" %in% names(encuesta_raw) || !"key" %in% names(ESOCC)) {
   stop("No se encontro la columna 'key' en una de las bases.")
 }
 
 # Variables extra: existen en ESOCC.csv, pero no en la encuesta original
-vars_extra <- setdiff(names(esocc_creadas), names(encuesta_raw))
+vars_extra <- setdiff(names(ESOCC), names(encuesta_raw))
 
 ESOCC <- encuesta_raw %>%
-  left_join(esocc_creadas %>% select(key, all_of(vars_extra)), by = "key")
+  left_join(ESOCC %>% select(key, all_of(vars_extra)), by = "key")
 
 
 
@@ -248,7 +248,7 @@ library(factoextra)
 library(FactoMineR)
 mca_result <- MCA(acm_subset, ncp = 4, graph = FALSE)
 
-summary(mca_result)
+summary(mca_result, nbelements = Inf, nbind = 0)
 
 
 fviz_screeplot(mca_result, addlabels = TRUE)
