@@ -95,6 +95,7 @@ ESOCC$AKATU_TOTAL %>% describe()
 # Encontrar el número óptimo de clusters usando el método del codo
 library(factoextra)
 data_for_clust <- ESOCC %>% select(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akatu_6, akatu_7, akatu_9, akatu_10, akatu_11)
+windows()
 fviz_nbclust(data_for_clust, kmeans, method = "wss")
 akatu_vars <- ESOCC %>% select(akatu_1, akatu_2, akatu_3, akatu_4, akatu_5, akatu_6, akatu_7, akatu_9, akatu_10, akatu_11)
 akatu_scaled <- scale(akatu_vars)
@@ -260,8 +261,33 @@ fviz_mca_var(
   ggtheme = theme_minimal()
 )
 
+
 # Si prefieres ver individuos y categorias juntos, usa este biplot:
 # fviz_mca_biplot(mca_result, repel = TRUE, ggtheme = theme_minimal())
 
 
+
+res.hcpc <- HCPC(mca_result, nb.clust = -1, graph = FALSE)
+
+datos_con_clusters <- res.hcpc$data.clust
+
+
+plot(res.hcpc, choice = "tree")
+
+fviz_cluster(res.hcpc, geom = "point", main = "Clusters de Individuos basados en ACM")
+
+
+
+res.hcpc <- HCPC(mca_result, nb.clust = 5, graph = FALSE)
+
+n_clusters <- max(as.numeric(res.hcpc$data.clust$clust))
+print(paste("El número óptimo sugerido es:", n_clusters))
+
+# Ver cuántas observaciones en cada cluster
+table(res.hcpc$data.clust$clust)
+
+# Ver a qué cluster pertenece cada observación
+res.hcpc$data.clust
+
+round(res.hcpc$desc.var$category[[5]], 2)
 
