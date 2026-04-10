@@ -1,0 +1,38 @@
+---
+title: "AKATU - Consumo Consciente"
+format: html
+theme: slate
+echo: false
+warning: false
+title-block-banner: true
+bibliography: Consumodef.bib
+csl: apa.csl
+lang: es
+---
+
+Para @akatu_pesquisa_2007, el consumo consciente se define como aquella práctica en donde el individuo asume los impactos que sus acciones cotidianas; como la compra, el uso y el descarte de productos o servicios tienen sobre sí mismo, la sociedad, el medio ambiente y la economía. Refiere a aquello que transforma al “ciudadano consumidor” en un “consumidor ciudadano”; aquel que se interesa por una sociedad que sea económicamente próspera, socialmente justa y ambientalmente sostenible.
+
+## Dimensiones del Comportamiento
+
+El Akatu organiza los hábitos del consumidor en cuatro dimensiones:
+
+    Economía (o Eficiencia): Prácticas que evitan el desperdicio y generan beneficios directos e inmediatos para el individuo (ej. apagar luces o cerrar llaves de agua).
+    Planeamiento (o Reflexión): Optimización racional de los recursos mediante la planificación anticipada de compras para un mejor aprovechamiento a mediano plazo.
+    Reciclagem: Acciones ligadas al descarte, reúso y gestión de residuos, orientadas principalmente a un retorno para el colectivo social.
+    Compras Sustentables (o Solidaridad): Refleja la movilización ante causas de sustentabilidad y responsabilidad empresarial, donde los beneficios son colectivos y a largo plazo.
+
+## Segmentación del Consumidor
+El nivel de conciencia se mide a través del Teste do Consumo Consciente, que evalúa la adopción de 13 comportamientos específicos. Según la cantidad de estas prácticas que el individuo realiza "siempre", se clasifica en cuatro grupos:
+
+    Indiferentes: Practican de 0 a 4 comportamientos.
+    Iniciantes: Practican de 5 a 7 comportamientos.
+    Engajados (Comprometidos): Practican de 8 a 10 comportamientos.
+    Conscientes: Practican de 11 a 13 comportamientos.
+
+## El Consumo como Herramienta de Cambio
+El consumo consciente no refiere a la "prudencia" o "frecuencia" en el consumo, sino a una forma alternativa de consumir. Se privilegia la calidad sobre la cantidad; y el bienestar sobre el exceso material. Akatu promueve que el consumidor pueda utilizar su poder de compra para premiar a empresas responsables y presionar al mercado hacia modelos más justos.
+
+##  Relación con el Bienestar y la Felicidad
+@akatu_pesquisa_2013 destaca que el consumo consciente está alineado con las aspiraciones profundas de los brasileños, quienes asocian la felicidad más con la salud y el convívio social que con la posesión de bienes. Se busca alcanzar el "punto óptimo" entre el bienestar generado y los recursos naturales y humanos utilizados.
+
+## (revisar las regresiones y los modelos)
